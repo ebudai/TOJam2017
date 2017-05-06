@@ -71,7 +71,7 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: Fire
-    descriptiveName: brakes
+    descriptiveName: shoot
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: 
