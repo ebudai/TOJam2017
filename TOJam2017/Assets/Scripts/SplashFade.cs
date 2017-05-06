@@ -14,29 +14,43 @@ public class SplashFade : MonoBehaviour {
 
     private bool getNames = false;
     private bool loadMain = false;
+    private bool exit = false;
 
     void Update()
     {
-        //i have added a comment here...
         if (Input.GetKeyDown("joystick button 0"))
         {
             getNames = true;
         }
 
-        if (Input.GetKey("escape"))
+        if (Input.GetKey(KeyCode.Escape))
         {
-            Application.Quit();
+            exit = true;
         }
-            
+
+        if (Input.GetKey(KeyCode.Return))
+        {
+            if (pilotInputField.text != "")
+            {
+                if (gunnerInputField.text != "")
+                {
+                    loadMain = true;
+                }
+                else
+                {
+                    pilotInputField.enabled = false;
+                    gunnerInputField.enabled = true;
+                    gunnerInputField.Select();
+                }
+            }
+
+        }
+
         if (pilotInputField.isFocused && pilotInputField.text != "" && Input.GetKey(KeyCode.Return))
         {
             pilotInputField.enabled = false;
             gunnerInputField.enabled = true;
             gunnerInputField.Select();
-        }
-        if (gunnerInputField.isFocused && gunnerInputField.text != "" && Input.GetKey(KeyCode.Return))
-        {
-            loadMain = true;
         }
         if (gunnerInputField.isFocused && gunnerInputField.text == "" && Input.GetKey(KeyCode.Backspace))
         {
@@ -70,13 +84,24 @@ public class SplashFade : MonoBehaviour {
                 yield return new WaitForSeconds(2.5f);
                 uiPanel.SetActive(true);
                 pilotInputField.Select();
-                break;
-
+                getNames = false;
             }
             if (loadMain)
             {
                 yield return new WaitForSeconds(1.0f);
                 SceneManager.LoadScene(loadLevel);
+                break;
+            }
+            if (exit)
+            {
+                #if UNITY_EDITOR
+                                // Application.Quit() does not work in the editor so
+                                // UnityEditor.EditorApplication.isPlaying need to be set to false to end the game
+                                UnityEditor.EditorApplication.isPlaying = false;
+                #else
+                         Application.Quit();
+                #endif
+                break;
             }
             yield return new WaitForSeconds(0.1f);
         }
@@ -95,7 +120,6 @@ public class SplashFade : MonoBehaviour {
     // Invoked when the value of the text field changes.
     public void PilotNameChange()
     {
-        Debug.Log("Pilot Value Changed");
         var upperText = pilotInputField.text.ToUpper();
         if (upperText != pilotInputField.text) pilotInputField.text = upperText;
         if (pilotInputField.text.Length == 3)
@@ -107,7 +131,6 @@ public class SplashFade : MonoBehaviour {
     }
     public void GunnerNameChange()
     {
-        Debug.Log("Gunner Value Changed");
         var upperText = gunnerInputField.text.ToUpper();
         if (upperText != gunnerInputField.text) gunnerInputField.text = upperText;
         if (gunnerInputField.text == "")
