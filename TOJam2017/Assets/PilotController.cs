@@ -32,11 +32,11 @@ public class PilotController : MonoBehaviour {
 
     private void HandleRotation()
     {
-        var rotationAmount = Input.GetAxis("Rotation");
+        var horizontalAmount = Input.GetAxis("Rotation");
         var verticalAmount = Input.GetAxis("Vertical");
-        var horizontalAmount = Input.GetAxis("Horizontal");
+        var rotationAmount = Input.GetAxis("Horizontal");
 
-        cube.AddTorque(-verticalAmount, horizontalAmount, 0);
-        cube.AddRelativeTorque(0, 0, rotationAmount);
+        cube.AddTorque(0, -horizontalAmount, 0);
+        cube.AddRelativeTorque(-verticalAmount, 0, -rotationAmount);
     }
 }
