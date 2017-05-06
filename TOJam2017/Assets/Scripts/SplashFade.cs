@@ -43,7 +43,6 @@ public class SplashFade : MonoBehaviour {
                     gunnerInputField.Select();
                 }
             }
-
         }
 
         if (pilotInputField.isFocused && pilotInputField.text != "" && Input.GetKey(KeyCode.Return))
@@ -62,6 +61,9 @@ public class SplashFade : MonoBehaviour {
 
     void Start()
     {
+        string text = System.IO.File.ReadAllText("hiscore.txt");
+        Debug.Log(text);
+
         gunnerInputField.enabled = false;
         pilotInputField.onValueChanged.AddListener(delegate { PilotNameChange(); });
         gunnerInputField.onValueChanged.AddListener(delegate { GunnerNameChange(); });
@@ -95,11 +97,11 @@ public class SplashFade : MonoBehaviour {
             if (exit)
             {
                 #if UNITY_EDITOR
-                                // Application.Quit() does not work in the editor so
-                                // UnityEditor.EditorApplication.isPlaying need to be set to false to end the game
-                                UnityEditor.EditorApplication.isPlaying = false;
+                    // Application.Quit() does not work in the editor so
+                    // UnityEditor.EditorApplication.isPlaying need to be set to false to end the game
+                    UnityEditor.EditorApplication.isPlaying = false;
                 #else
-                         Application.Quit();
+                    Application.Quit();
                 #endif
                 break;
             }
@@ -140,5 +142,4 @@ public class SplashFade : MonoBehaviour {
             pilotInputField.Select();
         }
     }
-
 }

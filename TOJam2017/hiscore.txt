@@ -1,0 +1,4 @@
+HIGH SCORES
+aaa bbb 10500
+bbb aaa 10200
+ccc ddd 900
