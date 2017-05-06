@@ -17,6 +17,7 @@ public class SplashFade : MonoBehaviour {
 
     void Update()
     {
+        //i have added a comment here...
         if (Input.GetKeyDown("joystick button 0"))
         {
             getNames = true;
