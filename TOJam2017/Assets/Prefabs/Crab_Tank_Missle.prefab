@@ -72,7 +72,7 @@ GameObject:
   - component: {fileID: 111384610185356196}
   m_Layer: 0
   m_Name: Crab_Tank_Missle
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

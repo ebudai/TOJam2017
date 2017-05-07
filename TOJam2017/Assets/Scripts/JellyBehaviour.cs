@@ -7,6 +7,8 @@ public class JellyBehaviour : MonoBehaviour
     public float distThreshold;
     private void Start()
     {
+        CollisionDelegator delegator = gameObject.AddComponent<CollisionDelegator>() as CollisionDelegator;
+        delegator.attach(GameController.Instance.handleEnterCollision, GameController.Instance.handleExitCollision);
         //start a coroutine that will "Bob" up and down
         StartCoroutine(Bob());
     }

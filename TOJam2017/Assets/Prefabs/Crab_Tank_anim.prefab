@@ -28,7 +28,7 @@ GameObject:
   - component: {fileID: 82015873924486856}
   m_Layer: 0
   m_Name: Crab_Tank_anim
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -905,7 +905,8 @@ Animation:
   m_Enabled: 1
   serializedVersion: 3
   m_Animation: {fileID: 7400000, guid: 0e0c5e2232165af49a6cb878abbdab16, type: 3}
-  m_Animations: []
+  m_Animations:
+  - {fileID: 7400000, guid: 0e0c5e2232165af49a6cb878abbdab16, type: 3}
   m_WrapMode: 0
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0

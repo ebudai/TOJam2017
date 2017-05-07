@@ -7,6 +7,9 @@ public class MissileBehaviour : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
+        CollisionDelegator delegator = gameObject.AddComponent<CollisionDelegator>() as CollisionDelegator;
+        delegator.attach(GameController.Instance.handleEnterCollision, GameController.Instance.handleExitCollision);
+
         StartCoroutine(TimeToLive());
     }
 

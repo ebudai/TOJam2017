@@ -29,8 +29,8 @@ public class CrabBehaviour : MonoBehaviour
     {
         Rigidbody rigidBody = GetComponent<Rigidbody>();
 
-        //CollisionDelegator delegator = gameObject.AddComponent(CollisionDelegator.NAME) as CollisionDelegator;
-        //delegator.attach(GameController.Instance.handleEnterCollision, GameController.Instance.handleExitCollision);
+        CollisionDelegator delegator = gameObject.AddComponent<CollisionDelegator>() as CollisionDelegator;
+        delegator.attach(GameController.Instance.handleEnterCollision, GameController.Instance.handleExitCollision);
         //anim = GetComponent<Animator>();
 
         var aSources = gameObject.GetComponents<AudioSource>();
