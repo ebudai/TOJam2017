@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PilotController : MonoBehaviour {
+    public bool invuln = false;
+    public bool dying = false;
 
     //private float Thrust { get; set; }
     private float MaxThrust { get; set; }
