@@ -8,11 +8,14 @@ public class CrabBehaviour : MonoBehaviour
     public float speed;
     public int scoreValue;
     public float fireRate;
+
     public GameObject shot;
+    public Transform LeftHardPt;
+    public Transform RightHardPt;
 
     //Animator anim;
     AudioSource fireSound;
-    AudioSource deathSound;
+    AudioSource flybySound;
 
     private BotState myState = new BotState();
     private BotCommandStruct myCommands = new BotCommandStruct();
@@ -26,13 +29,13 @@ public class CrabBehaviour : MonoBehaviour
     {
         Rigidbody rigidBody = GetComponent<Rigidbody>();
 
-        //CollisionDelegator delegator = gameObject.AddComponent(CollisionDelegator.NAME) as CollisionDelegator;
-        //delegator.attach(GameController.Instance.handleEnterCollision, GameController.Instance.handleExitCollision);
+        CollisionDelegator delegator = gameObject.AddComponent<CollisionDelegator>() as CollisionDelegator;
+        delegator.attach(GameController.Instance.handleEnterCollision, GameController.Instance.handleExitCollision);
         //anim = GetComponent<Animator>();
 
         var aSources = gameObject.GetComponents<AudioSource>();
         fireSound = aSources[0];
-        deathSound = aSources[1];
+        flybySound = aSources[1];
 
         myState.playerSpotted = false;
         myState.alive = true;
@@ -107,12 +110,12 @@ public class CrabBehaviour : MonoBehaviour
 
                 myState.desiredHeading = desiredHeading;
                 myState.dirToPlayer = desiredHeading.normalized;
-                myState.distToPlayer = Vector3.Distance(playerPos, rigidBody.position);
-
+                myState.distToPlayer = Vector3.Distance(playerPos, transform.position);
+               // Debug.Log("distToPlayer: " + myState.distToPlayer);
                 //visual debugging
-                Debug.DrawRay(transform.position, transform.forward * 15, Color.blue);
-                Debug.DrawRay(transform.position, rigidBody.angularVelocity * 10, Color.black);
-                Debug.DrawRay(transform.position, desiredHeading, Color.magenta);
+                //Debug.DrawRay(transform.position, transform.forward * 15, Color.blue);
+                //Debug.DrawRay(transform.position, rigidBody.angularVelocity * 10, Color.black);
+                //Debug.DrawRay(transform.position, desiredHeading, Color.magenta);
             }
         }
     }
@@ -121,10 +124,10 @@ public class CrabBehaviour : MonoBehaviour
     //executes subsumption rules and commands
     IEnumerator FollowPlayer()
     {
+        yield return new WaitForSeconds(UnityEngine.Random.Range(0.5f, 1.5f));
         Rigidbody rigidBody = GetComponent<Rigidbody>();
         while (myState.alive)
         {
-
             //clear commands
             myCommands = new BotCommandStruct();
             myCommands.thrust = 0;
@@ -140,21 +143,31 @@ public class CrabBehaviour : MonoBehaviour
                 rigidBody.AddForce(transform.forward * myCommands.thrust);
                 //rigidBody.AddForce(transform.up * myCommands.thrust);
             }
+
             if (myCommands.angularCorrection != null)
             {
-                rigidBody.AddTorque(myCommands.angularCorrection);
+                rigidBody.AddTorque(myCommands.angularCorrection.Value);
             }
             if (myCommands.torque != null)
             {
-                rigidBody.AddTorque(myCommands.torque);
+                rigidBody.AddTorque(myCommands.torque.Value);
             }
 
             if (myCommands.fire && Time.time > nextFire)
             {
                 //fire
                 fireSound.Play();
-                //GameObject newShot = (GameObject)Instantiate(shot, rigidBody.position, rigidBody.rotation);
-                //newShot.GetComponent<Rigidbody>().AddForce(myCommands.firingAngle * 300);
+                //need two shots here, one on right, one on left
+                //spawn them from the loc of hard pts
+                var anim = GetComponent<Animation>();
+                anim["Take 001"].time = 0.50f;
+                anim.Play();
+                GameObject leftShot = (GameObject)Instantiate(shot, LeftHardPt.position, transform.rotation);
+                GameObject rightShot = (GameObject)Instantiate(shot, RightHardPt.position, transform.rotation);
+
+                leftShot.GetComponent<Rigidbody>().AddForce(transform.forward * 6000);
+                rightShot.GetComponent<Rigidbody>().AddForce(transform.forward * 6000);
+
                 nextFire = Time.time + fireRate;
             }
 
@@ -209,18 +222,43 @@ public class CrabBehaviour : MonoBehaviour
 
     void Idle()
     {
-        //if (myState.distToPlayer <= 5)
-        //{
-        //    myCommands.velocity = new Vector3(0f, 0f, 0f);
-        //    if (myState.posDiffToPlayer.x > 0)
-        //    {
-        //        myCommands.velocity = Vector3.right * speed;
-        //    }
-        //    else
-        //    {
-        //        myCommands.velocity = Vector3.left * speed;
-        //    }
-        //}
+        Rigidbody rigidBody = GetComponent<Rigidbody>();
+        Collider playerCollider = null;
+
+        if (myState.distToPlayer <= 15)
+        {
+            if (!flybySound.isPlaying)
+            {
+                flybySound.Play();
+            }
+
+            //change direction away from player
+            var angularVelocityError = rigidBody.angularVelocity * -1;
+            var angularVelocityCorrection = angularVelocityController.Update(angularVelocityError, 0.1f);
+            myCommands.angularCorrection = angularVelocityCorrection;
+
+            var headingError = Vector3.Cross(transform.forward, myState.desiredHeading * -1.0f);
+            var headingCorrection = headingController.Update(headingError, 0.1f);
+            myCommands.torque = headingCorrection;
+
+            var player = GameObject.Find("PlayerShip");
+            if (player != null)
+            {
+                playerCollider = player.GetComponent<Collider>();
+                if (playerCollider != null)
+                {
+                    var bounds = playerCollider.bounds;
+
+                    //raycast on target
+                    var lineToTarget = new Ray(rigidBody.position, transform.forward);
+                    if (!bounds.IntersectRay(lineToTarget))
+                    {
+                        myCommands.thrust = speed;
+                        //myCommands.firingAngle = direction;
+                    }
+                }
+            }
+        }
     }
 }
 

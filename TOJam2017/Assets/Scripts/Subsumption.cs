@@ -20,10 +20,10 @@ public class BotCommandStruct
 	public bool fire = false;
 	public Vector3 firingAngle;	
 	public Vector3 velocity;
-    public Vector3 torque;
+    public Vector3? torque;
     public float thrust;
 	public Quaternion rotation;
-    public Vector3 angularCorrection;
+    public Vector3? angularCorrection;
 }
 
 public struct BotState

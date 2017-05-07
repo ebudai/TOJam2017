@@ -25,6 +25,7 @@ ModelImporter:
     100034: Bone017
     100036: Box016
     100038: //RootNode
+    100040: Line002
     400000: Bone003(mirrored)
     400002: Bone003(mirrored)(mirrored)
     400004: Bone004(mirrored)
@@ -45,9 +46,11 @@ ModelImporter:
     400034: Bone017
     400036: Box016
     400038: //RootNode
+    400040: Line002
     4300000: Box016
     7400000: Take 001
     9500000: //RootNode
+    11100000: //RootNode
     13700000: Box016
   materials:
     importMaterials: 1
@@ -110,10 +113,10 @@ ModelImporter:
     rootMotionBoneName: 
     rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
-    hasExtraRoot: 0
+    hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 1
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
