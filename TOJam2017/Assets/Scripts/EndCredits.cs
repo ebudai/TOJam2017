@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -30,10 +32,31 @@ public class EndCredits : MonoBehaviour
     void Start()
     {
         string hiscoreText = System.IO.File.ReadAllText("hiscore.txt");
-        gameOverImg.canvasRenderer.SetAlpha(0.0f);
-        //creditsImg.canvasRenderer.SetAlpha(0.0f);
+        string[] lines = hiscoreText.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
+        Dictionary<string, int> scoreTable = new Dictionary<string, int>();
+        int i;
 
-        hiScoreField.text = hiscoreText;
+        for (i=0;i<lines.Length; i++)
+        {
+            string thisLine = lines[i];
+            if (thisLine == "HIGH SCORES") continue;
+            string[] vals = thisLine.Split(' ');
+            //string[] lines = hiscoreText.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
+            scoreTable[vals[0]] = Int32.Parse(vals[1]);
+        }
+        GameObject persistentGameObject = GameObject.Find("PlayerInfoStore");
+        var persistentScript = persistentGameObject.GetComponent<PlayerInfo>();
+        scoreTable[persistentScript.playerName] = persistentScript.score;
+
+        string newHiScores = "HIGH SCORES";
+        var ordered = scoreTable.OrderByDescending(x => x.Value).Take(5);
+        foreach (var kvp in ordered)
+        {
+            newHiScores += "\n" + kvp.Key + " " + kvp.Value.ToString();
+        }
+        System.IO.File.WriteAllText("hiscore.txt", newHiScores);
+        gameOverImg.canvasRenderer.SetAlpha(0.0f);
+        hiScoreField.text = newHiScores;
         hiScores.SetActive(false);
 
         StartCoroutine(ExitLoop());

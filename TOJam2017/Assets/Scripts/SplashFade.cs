@@ -30,33 +30,40 @@ public class SplashFade : MonoBehaviour {
 
         if (Input.GetKey(KeyCode.Return))
         {
+            //if (pilotInputField.text != "")
+            //{
+            //    if (gunnerInputField.text != "")
+            //    {
+            //        loadMain = true;
+            //    }
+            //    else
+            //    {
+            //        pilotInputField.enabled = false;
+            //        gunnerInputField.enabled = true;
+            //        gunnerInputField.Select();
+            //    }
+            //}
             if (pilotInputField.text != "")
             {
-                if (gunnerInputField.text != "")
-                {
-                    loadMain = true;
-                }
-                else
-                {
-                    pilotInputField.enabled = false;
-                    gunnerInputField.enabled = true;
-                    gunnerInputField.Select();
-                }
+                GameObject persistentGameObject = GameObject.Find("PlayerInfoStore");
+                var persistentScript = persistentGameObject.GetComponent<PlayerInfo>();
+                persistentScript.playerName = pilotInputField.text;
+                loadMain = true;
             }
         }
 
-        if (pilotInputField.isFocused && pilotInputField.text != "" && Input.GetKey(KeyCode.Return))
-        {
-            pilotInputField.enabled = false;
-            gunnerInputField.enabled = true;
-            gunnerInputField.Select();
-        }
-        if (gunnerInputField.isFocused && gunnerInputField.text == "" && Input.GetKey(KeyCode.Backspace))
-        {
-            gunnerInputField.enabled = false;
-            pilotInputField.enabled = true;
-            pilotInputField.Select();
-        }
+        //if (pilotInputField.isFocused && pilotInputField.text != "" && Input.GetKey(KeyCode.Return))
+        //{
+        //    pilotInputField.enabled = false;
+        //    gunnerInputField.enabled = true;
+        //    gunnerInputField.Select();
+        //}
+        //if (gunnerInputField.isFocused && gunnerInputField.text == "" && Input.GetKey(KeyCode.Backspace))
+        //{
+        //    gunnerInputField.enabled = false;
+        //    pilotInputField.enabled = true;
+        //    pilotInputField.Select();
+        //}
     }
 
     void Start()
@@ -64,9 +71,9 @@ public class SplashFade : MonoBehaviour {
         string text = System.IO.File.ReadAllText("hiscore.txt");
         Debug.Log(text);
 
-        gunnerInputField.enabled = false;
-        pilotInputField.onValueChanged.AddListener(delegate { PilotNameChange(); });
-        gunnerInputField.onValueChanged.AddListener(delegate { GunnerNameChange(); });
+        //gunnerInputField.enabled = false;
+        //pilotInputField.onValueChanged.AddListener(delegate { PilotNameChange(); });
+        //gunnerInputField.onValueChanged.AddListener(delegate { GunnerNameChange(); });
 
         uiPanel.SetActive(false);
 
@@ -119,27 +126,27 @@ public class SplashFade : MonoBehaviour {
         splashImage.CrossFadeAlpha(0.0f, 1.5f, false);
     }
 
-    // Invoked when the value of the text field changes.
-    public void PilotNameChange()
-    {
-        var upperText = pilotInputField.text.ToUpper();
-        if (upperText != pilotInputField.text) pilotInputField.text = upperText;
-        if (pilotInputField.text.Length == 3)
-        {
-            pilotInputField.enabled = false;
-            gunnerInputField.enabled = true;
-            gunnerInputField.Select();
-        }
-    }
-    public void GunnerNameChange()
-    {
-        var upperText = gunnerInputField.text.ToUpper();
-        if (upperText != gunnerInputField.text) gunnerInputField.text = upperText;
-        if (gunnerInputField.text == "")
-        {
-            gunnerInputField.enabled = false;
-            pilotInputField.enabled = true;
-            pilotInputField.Select();
-        }
-    }
+    //// Invoked when the value of the text field changes.
+    //public void PilotNameChange()
+    //{
+    //    var upperText = pilotInputField.text.ToUpper();
+    //    if (upperText != pilotInputField.text) pilotInputField.text = upperText;
+    //    if (pilotInputField.text.Length == 3)
+    //    {
+    //        pilotInputField.enabled = false;
+    //        gunnerInputField.enabled = true;
+    //        gunnerInputField.Select();
+    //    }
+    //}
+    //public void GunnerNameChange()
+    //{
+    //    var upperText = gunnerInputField.text.ToUpper();
+    //    if (upperText != gunnerInputField.text) gunnerInputField.text = upperText;
+    //    if (gunnerInputField.text == "")
+    //    {
+    //        gunnerInputField.enabled = false;
+    //        pilotInputField.enabled = true;
+    //        pilotInputField.Select();
+    //    }
+    //}
 }

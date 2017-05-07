@@ -89,6 +89,9 @@ public class GameController : MonoBehaviour
         }
         if (gameOver)
         {
+            GameObject persistentGameObject = GameObject.Find("PlayerInfoStore");
+            var persistentScript = persistentGameObject.GetComponent<PlayerInfo>();
+            persistentScript.score = score;
             SceneManager.LoadScene(loadLevel);
         }
     }
