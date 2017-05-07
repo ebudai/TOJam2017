@@ -1,22 +1,16 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PilotController : MonoBehaviour {
-    public bool invuln = false;
-    public bool dying = false;
-    public Image reticleUI;
-    public Camera playerCamera;
     public GameObject shot;
     public Text scorePanel;
-
+    public bool invuln = false;
+    public bool dying = false;
     public GameObject[] healthLevels;
-
-    //private float Thrust { get; set; }
     private float MaxThrust { get; set; }
-    private int health = 100;
     private Rigidbody ship;
     public Camera playerCamera;
     public Camera radarTopCamera;
@@ -26,6 +20,8 @@ public class PilotController : MonoBehaviour {
     private int lastFrameParticleCount;
     private Vector3 gunnerAim;
     private AudioSource laserSound;
+
+    private int health = 100;
     private AudioSource alarmSound;
     private AudioSource thrusterSound;
     private AudioSource hitSound;
@@ -42,6 +38,7 @@ public class PilotController : MonoBehaviour {
         RenderSettings.fogDensity = 0.04f;
         RenderSettings.skybox = null;
         //END FOG
+
         var aSources = gameObject.GetComponents<AudioSource>();
         alarmSound = aSources[0];
         thrusterSound = aSources[1];
@@ -49,9 +46,6 @@ public class PilotController : MonoBehaviour {
 
         MaxThrust = 100;
         ship = GetComponent<Rigidbody>();
-        //cannon = GameObject.Find("Player Lasers").GetComponent<ParticleSystem>();
-        //gunnerCannon = GameObject.Find("Gunner Lasers").GetComponent<ParticleSystem>();
-        reticleUI.transform.position.Set(Screen.width / 2, Screen.height / 2, 0);
         laserSound = GameObject.Find("Laser Sound").GetComponent<AudioSource>();
 
         healthLevels[9].SetActive(false);
@@ -76,11 +70,18 @@ public class PilotController : MonoBehaviour {
         HandleRotation();
         HandleThrusting();
         HandleRadar();
-        //HandleShooting();
+        HandleShooting();
         //HandleLaserSounds();
         // HandleGunnerAiming();
         int score = GameController.Instance.GetScore();
         scorePanel.text = score.ToString();
+    }
+
+    private void HandleRadar()
+    {
+        radarTopCamera.transform.position = transform.position + new Vector3(0, 1100, 0);
+        radarFrontCamera.transform.position = transform.position + new Vector3(0, 0, 1100);
+        //radarTopCamera.transform.rotation.SetLookRotation(transform.position, new Vector3(0, transform.rotation.y, 0));
     }
 
     //private void HandleGunnerAiming()
@@ -99,21 +100,14 @@ public class PilotController : MonoBehaviour {
     //    lastFrameParticleCount = cannon.particleCount;
     //}
 
-    IEnumerator HandleShooting()
-    {
-        while (true)
-        {
-            if (Input.GetAxis("Fire") != 0)
-            {
-                laserSound.Play();
-                GameObject newShot = (GameObject)Instantiate(shot, transform.position + (transform.forward * 5.0f), transform.rotation);
-                newShot.GetComponent<Rigidbody>().AddForce(transform.forward * 6000);
-            }
-            //if (Input.GetAxis("Gunner Fire") != 0) gunnerCannon.Play();
-            //else gunnerCannon.Stop();
-            yield return new WaitForSeconds(0.2f);
-        }
-    }
+    //private void HandleShooting()
+    //{
+    //    if (Input.GetAxis("Fire") != 0) cannon.Play();
+    //    else cannon.Stop();
+
+    //    if (Input.GetAxis("Gunner Fire") != 0) gunnerCannon.Play();
+    //    else gunnerCannon.Stop();
+    //}
 
     private void HandleThrusting()
     {
@@ -128,6 +122,22 @@ public class PilotController : MonoBehaviour {
             thrust = Math.Min(thrust, MaxThrust);
             thrust = Math.Max(thrust, 0);
             ship.AddForce(transform.forward * thrust);
+        }
+    }
+
+    IEnumerator HandleShooting()
+    {
+        while (true)
+        {
+            if (Input.GetAxis("Fire") != 0)
+            {
+                laserSound.Play();
+                GameObject newShot = (GameObject)Instantiate(shot, transform.position + (transform.forward * 5.0f), transform.rotation);
+                newShot.GetComponent<Rigidbody>().AddForce(transform.forward * 6000);
+            }
+            //if (Input.GetAxis("Gunner Fire") != 0) gunnerCannon.Play();
+            //else gunnerCannon.Stop();
+            yield return new WaitForSeconds(0.2f);
         }
     }
 
