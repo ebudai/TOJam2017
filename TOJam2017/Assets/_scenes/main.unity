@@ -1424,7 +1424,7 @@ MonoBehaviour:
   gameOver: 0
   restart: 0
   jellyMob: {fileID: 54265085176274432, guid: a924ce16fcf75e94abf3baecc8861794, type: 2}
-  crabMob: {fileID: 54818505014546220, guid: 8f6ba4b3ad607bf4eabd006b490a4cea, type: 2}
+  crabMob: {fileID: 54376434573126174, guid: 8f6ba4b3ad607bf4eabd006b490a4cea, type: 2}
   jellyDensity: 50
 --- !u!82 &922834454
 AudioSource:

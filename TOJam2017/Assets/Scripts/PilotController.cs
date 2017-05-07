@@ -102,6 +102,8 @@ public class PilotController : MonoBehaviour
             healthLevels[0].SetActive(false);
             health = 100;
         }
+
+        ship.angularDrag = (float)(2 + (2 * ship.velocity.magnitude / 11.2));
     }
 
     private void HandleRadar()
