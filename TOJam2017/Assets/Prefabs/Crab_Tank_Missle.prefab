@@ -35,6 +35,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4914307949247084}
   - component: {fileID: 137275175733560584}
+  - component: {fileID: 108022128276491282}
   m_Layer: 8
   m_Name: Sphere003
   m_TagString: Untagged
@@ -71,7 +72,6 @@ GameObject:
   - component: {fileID: 114922502279266904}
   - component: {fileID: 111384610185356196}
   - component: {fileID: 82691323753979040}
-  - component: {fileID: 108848258790603628}
   m_Layer: 8
   m_Name: Crab_Tank_Missle
   m_TagString: Projectile
@@ -304,16 +304,16 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!108 &108848258790603628
+--- !u!108 &108022128276491282
 Light:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1319595185629206}
+  m_GameObject: {fileID: 1149032154915288}
   m_Enabled: 1
   serializedVersion: 8
   m_Type: 2
-  m_Color: {r: 1, g: 0.49264705, b: 0.49264705, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_Intensity: 5
   m_Range: 20
   m_SpotAngle: 30
