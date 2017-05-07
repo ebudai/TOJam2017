@@ -7,8 +7,7 @@ using UnityEngine.UI;
 public class PilotController : MonoBehaviour {
     public bool invuln = false;
     public bool dying = false;
-    public Image reticleUI;
-    //private float Thrust { get; set; }
+    //public Image reticleUI;
     private float MaxThrust { get; set; }
     private Rigidbody ship;
     public Camera playerCamera;
@@ -24,7 +23,8 @@ public class PilotController : MonoBehaviour {
         ship = GetComponent<Rigidbody>();
         cannon = GameObject.Find("Player Lasers").GetComponent<ParticleSystem>();
         gunnerCannon = GameObject.Find("Gunner Lasers").GetComponent<ParticleSystem>();
-        reticleUI.transform.position.Set(Screen.width / 2, Screen.height / 2, 0);
+        //reticleUI.transform.position.Set(Screen.width / 2, Screen.height / 2, 0);
+        gunnerAim = new Vector3();
         laserSound = GameObject.Find("Laser Sound").GetComponent<AudioSource>();
     }
 	
@@ -39,11 +39,15 @@ public class PilotController : MonoBehaviour {
     
     private void HandleGunnerAiming()
     {
-        var horizontal = Clamp(Input.GetAxis("Horizontal Aim"), reticleUI.preferredWidth, Screen.width);
-        var vertical = Clamp(Input.GetAxis("Vertical Aim"), reticleUI.preferredHeight, Screen.height);
-       
-        reticleUI.transform.position += new Vector3(horizontal, vertical, 0) * 14.65f;
+        //var horizontal = Clamp(Input.GetAxis("Horizontal Aim"), reticleUI.preferredWidth, Screen.width);
+        //var vertical = Clamp(Input.GetAxis("Vertical Aim"), reticleUI.preferredHeight, Screen.height);
+        var horizontal = Input.GetAxis("Horizontal Aim");
+        var vertical = Input.GetAxis("Vertical Aim");
+
+        //reticleUI.transform.position += new Vector3(horizontal, vertical, 0) * 14.65f;
+        //gunnerCannon.transform.Rotate(gunnerRay.GetPoint(200));
         gunnerCannon.transform.Rotate(-vertical, horizontal, 0);
+        gunnerAim += new Vector3(-vertical, horizontal, 0);
     }
 
     private void HandleLaserSounds()
