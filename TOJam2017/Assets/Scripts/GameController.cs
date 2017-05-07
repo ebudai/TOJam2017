@@ -25,10 +25,8 @@ public class GameController : MonoBehaviour
 
     public Rigidbody jellyMob;
     public Rigidbody crabMob;
-    public int jellyDensity = 50;
+    public int jellyDensity = 100;
 
-    //private Dictionary<string, int>score =  new Dictionary<string, int>();
-    private int score;
 
 	private float xMin = -5f;
 	private float xMax = 5f;
@@ -46,9 +44,11 @@ public class GameController : MonoBehaviour
     private List<Rigidbody> jellies = new List<Rigidbody>();
     private int waveSize = 3;
     private int level = 0;
-	//float theEnd = 0;
+    private int score = 0;
+    private int pLives = 3;
+    //float theEnd = 0;
 
-	private void Awake()
+    private void Awake()
 	{
 		if (instance == null)
 		{
@@ -64,6 +64,9 @@ public class GameController : MonoBehaviour
 
 	void Start () 
 	{
+        level = 0;
+        score = 0;
+        pLives = 3;
         StartCoroutine(SpawnJellies());
         StartCoroutine(SpawnWaves());
     }
@@ -128,34 +131,17 @@ public class GameController : MonoBehaviour
                 }
                // Debug.Log("spawnOffset: " + xOffset + "," + yOffset + "," + zOffset);
                 Vector3 spawnOffset = new Vector3(xOffset, yOffset, zOffset);
-                jellies.Add(Instantiate(jellyMob, player.transform.position + spawnOffset, jellyMob.transform.rotation));
+                Instantiate(jellyMob, player.transform.position + spawnOffset, jellyMob.transform.rotation);
             }
         }
 
         while (true)
-        {
-            List<Rigidbody> removeList = new List<Rigidbody>();
-            foreach (Rigidbody jelly in jellies)
-            {
-                if (jelly != null)
-                {
-                    var jellyBrain = jelly.GetComponent<JellyBehaviour>();
-                    if (jellyBrain.isDead())
-                    {
-                        //Debug.Log("Removing dead jelly");
-                        removeList.Add(jelly);
-                    }
-                }
-            }
-            foreach (Rigidbody jelly in removeList)
-            {
-                jellies.Remove(jelly);
-            }
-
-            if (jellies.Count < jellyDensity)
+        { 
+            jelliesArr = GameObject.FindGameObjectsWithTag("Jelly");
+            if (jelliesArr.Length < jellyDensity)
             {
                 //not enough jellies, create!
-                for (int i = jellies.Count; i < jellyDensity; i++)
+                for (int i = jelliesArr.Length; i < jellyDensity; i++)
                 {
                     //Debug.Log("Spawning jelly: " + i);
                     //spawn a jelly from 10-100 units away in a random dir...
@@ -189,7 +175,7 @@ public class GameController : MonoBehaviour
                     }
                     //Debug.Log("spawnOffset: " + xOffset + "," + yOffset + "," + zOffset);
                     Vector3 spawnOffset = new Vector3(xOffset, yOffset, zOffset);
-                    jellies.Add(Instantiate(jellyMob, player.transform.position + spawnOffset, jellyMob.transform.rotation));
+                    Instantiate(jellyMob, player.transform.position + spawnOffset, jellyMob.transform.rotation);
                 }
             }
             yield return new WaitForSeconds(5.0f);
@@ -258,18 +244,19 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void Reset () 
-	{
-		gameOver = false;
-		restart = false;
-		score = 0;
-		//playerMoves["Player1"] = new List<PlayerMoveRecord>();
-	}
-
 	public void AddScore(int newScoreValue) 
 	{
 		score += newScoreValue;
 	}
+
+    public void LoseLife()
+    {
+        pLives -= 1;
+        if (pLives < 0)
+        {
+            GameOver();
+        }
+    }
 
     public int GetScore()
     {
@@ -487,30 +474,17 @@ public class GameController : MonoBehaviour
                 }
                 break;
             case "Enemy":
-                Debug.Log(trigger.tag + " hit " + collided.tag);
+                //Debug.Log(trigger.tag + " hit " + collided.tag);
                 break;
             case "Player" :
                 if (collided.tag == "Jelly")
                 {
-                    Debug.Log(trigger.tag + " hit " + collided.tag);
+                    //Debug.Log(trigger.tag + " hit " + collided.tag);
                     trigger.GetComponent<PilotController>().Stop();
                 }
                 //Debug.Log(trigger.tag + " hit " + collided.tag);
                 break;
         }
-    
-        //if (trigger.tag == "<SomeProjectile>") 
-        //{
-        //	if (collided.tag == "Wall") 
-        //	{
-        //		//...
-        //	}
-        //	if (collided.tag == "Player") 
-        //	{
-        //		//...
-        //	}
-        //}
-        ////...
     }
 
 	public void handleExitCollision (GameObject trigger, Collider collided)  

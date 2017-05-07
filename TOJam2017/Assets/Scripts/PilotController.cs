@@ -100,17 +100,26 @@ public class PilotController : MonoBehaviour {
     //    lastFrameParticleCount = cannon.particleCount;
     //}
 
-    //private void HandleShooting()
-    //{
-    //    if (Input.GetAxis("Fire") != 0) cannon.Play();
-    //    else cannon.Stop();
-
-    //    if (Input.GetAxis("Gunner Fire") != 0) gunnerCannon.Play();
-    //    else gunnerCannon.Stop();
-    //}
+    IEnumerator HandleShooting()
+    {
+        while (true)
+        {
+            if (dying) continue;
+            if (Input.GetAxis("Fire") != 0)
+            {
+                laserSound.Play();
+                GameObject newShot = (GameObject)Instantiate(shot, transform.position + (transform.forward * 5.0f), transform.rotation);
+                newShot.GetComponent<Rigidbody>().AddForce(transform.forward * 6000);
+            }
+            //if (Input.GetAxis("Gunner Fire") != 0) gunnerCannon.Play();
+            //else gunnerCannon.Stop();
+            yield return new WaitForSeconds(0.2f);
+        }
+    }
 
     private void HandleThrusting()
     {
+        if (dying) return;
         float thrustInput = Input.GetAxis("Thrust");
         if (thrustInput > 0)
         {
@@ -143,6 +152,7 @@ public class PilotController : MonoBehaviour {
 
     private void HandleRotation()
     {
+        if (dying) return;
         var horizontalAmount = Input.GetAxis("Rotation");
         var verticalAmount = Input.GetAxis("Vertical");
         var rotationAmount = Input.GetAxis("Horizontal");
@@ -167,6 +177,7 @@ public class PilotController : MonoBehaviour {
 
     public void TakeHit()
     {
+        if (dying) return;
         if (!hitSound.isPlaying)
         {
             hitSound.Play();
@@ -220,5 +231,26 @@ public class PilotController : MonoBehaviour {
             healthLevels[0].SetActive(true);
             healthLevels[1].SetActive(false);
         }
+        if (health <= 0)
+        {
+            Die();
+        }
     }
+
+    void Die()
+    {
+        dying = true;
+        invuln = true;
+        Stop();
+        GameController.Instance.LoseLife();
+       // StartCoroutine(ResetPlayer());
+    }
+
+    //IEnumerator ResetPlayer()
+    //{
+    //    transform.position = new Vector3(0.0f, 0.0f, 0.0f);
+    //    transform.rotation = transform.rotation = Quaternion.identity;
+    //    invuln = false;
+    //    dying = false;
+    //}
 }
