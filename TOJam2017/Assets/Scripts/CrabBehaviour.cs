@@ -8,11 +8,14 @@ public class CrabBehaviour : MonoBehaviour
     public float speed;
     public int scoreValue;
     public float fireRate;
+
     public GameObject shot;
+    public Transform LeftHardPt;
+    public Transform RightHardPt;
 
     //Animator anim;
     AudioSource fireSound;
-    AudioSource deathSound;
+    //AudioSource deathSound;
 
     private BotState myState = new BotState();
     private BotCommandStruct myCommands = new BotCommandStruct();
@@ -32,7 +35,7 @@ public class CrabBehaviour : MonoBehaviour
 
         var aSources = gameObject.GetComponents<AudioSource>();
         fireSound = aSources[0];
-        deathSound = aSources[1];
+        //deathSound = aSources[1];
 
         myState.playerSpotted = false;
         myState.alive = true;
@@ -140,21 +143,31 @@ public class CrabBehaviour : MonoBehaviour
                 rigidBody.AddForce(transform.forward * myCommands.thrust);
                 //rigidBody.AddForce(transform.up * myCommands.thrust);
             }
+
             if (myCommands.angularCorrection != null)
             {
-                rigidBody.AddTorque(myCommands.angularCorrection);
+                rigidBody.AddTorque(myCommands.angularCorrection.Value);
             }
             if (myCommands.torque != null)
             {
-                rigidBody.AddTorque(myCommands.torque);
+                rigidBody.AddTorque(myCommands.torque.Value);
             }
 
             if (myCommands.fire && Time.time > nextFire)
             {
                 //fire
                 fireSound.Play();
-                //GameObject newShot = (GameObject)Instantiate(shot, rigidBody.position, rigidBody.rotation);
-                //newShot.GetComponent<Rigidbody>().AddForce(myCommands.firingAngle * 300);
+                //need two shots here, one on right, one on left
+                //spawn them from the loc of hard pts
+                var anim = GetComponent<Animation>();
+                anim["Take 001"].time = 0.50f;
+                anim.Play();
+                GameObject leftShot = (GameObject)Instantiate(shot, LeftHardPt.position, transform.rotation);
+                GameObject rightShot = (GameObject)Instantiate(shot, RightHardPt.position, transform.rotation);
+
+                leftShot.GetComponent<Rigidbody>().AddForce(transform.forward * 6000);
+                rightShot.GetComponent<Rigidbody>().AddForce(transform.forward * 6000);
+
                 nextFire = Time.time + fireRate;
             }
 

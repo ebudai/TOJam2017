@@ -70,8 +70,8 @@ public class SplashFade : MonoBehaviour {
 
         uiPanel.SetActive(false);
 
-        splashImage.canvasRenderer.SetAlpha(0.0f);
-        FadeIn();
+        //splashImage.canvasRenderer.SetAlpha(0.0f);
+        //FadeIn();
 
         StartCoroutine(GameLoop());
     }
