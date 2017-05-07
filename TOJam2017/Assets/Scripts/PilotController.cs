@@ -97,6 +97,7 @@ public class PilotController : MonoBehaviour {
     {
         while (true)
         {
+            if (dying) continue;
             if (Input.GetAxis("Fire") != 0)
             {
                 laserSound.Play();
@@ -111,6 +112,7 @@ public class PilotController : MonoBehaviour {
 
     private void HandleThrusting()
     {
+        if (dying) return;
         float thrustInput = Input.GetAxis("Thrust");
         if (thrustInput > 0)
         {
@@ -127,6 +129,7 @@ public class PilotController : MonoBehaviour {
 
     private void HandleRotation()
     {
+        if (dying) return;
         var horizontalAmount = Input.GetAxis("Rotation");
         var verticalAmount = Input.GetAxis("Vertical");
         var rotationAmount = Input.GetAxis("Horizontal");
@@ -149,6 +152,7 @@ public class PilotController : MonoBehaviour {
 
     public void TakeHit()
     {
+        if (dying) return;
         if (!hitSound.isPlaying)
         {
             hitSound.Play();
@@ -202,5 +206,26 @@ public class PilotController : MonoBehaviour {
             healthLevels[0].SetActive(true);
             healthLevels[1].SetActive(false);
         }
+        if (health <= 0)
+        {
+            Die();
+        }
     }
+
+    void Die()
+    {
+        dying = true;
+        invuln = true;
+        Stop();
+        GameController.Instance.LoseLife();
+       // StartCoroutine(ResetPlayer());
+    }
+
+    //IEnumerator ResetPlayer()
+    //{
+    //    transform.position = new Vector3(0.0f, 0.0f, 0.0f);
+    //    transform.rotation = transform.rotation = Quaternion.identity;
+    //    invuln = false;
+    //    dying = false;
+    //}
 }
