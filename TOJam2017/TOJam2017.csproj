@@ -78,6 +78,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\LightShafts\LightShafts.Resources.cs" />
+    <Compile Include="Assets\LightShafts\LightShafts.Utils.cs" />
+    <Compile Include="Assets\LightShafts\LightShafts.cs" />
     <Compile Include="Assets\Scripts\CollisionDelegator.cs" />
     <Compile Include="Assets\Scripts\CrabBehaviour.cs" />
     <Compile Include="Assets\Scripts\EndCredits.cs" />
@@ -89,6 +92,17 @@
     <Compile Include="Assets\Scripts\PilotController.cs" />
     <Compile Include="Assets\Scripts\SplashFade.cs" />
     <Compile Include="Assets\Scripts\Subsumption.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\LightShafts\ColorFilter.shader" />
+    <None Include="Assets\LightShafts\Coord.shader" />
+    <None Include="Assets\LightShafts\Depth.shader" />
+    <None Include="Assets\LightShafts\DepthBreaks.shader" />
+    <None Include="Assets\LightShafts\FinalInterpolation.shader" />
+    <None Include="Assets\LightShafts\InterpolateAlongRays.shader" />
+    <None Include="Assets\LightShafts\Raymarch.shader" />
+    <None Include="Assets\LightShafts\SamplePositions.shader" />
+    <None Include="Assets\LightShafts\Shared.cginc" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
