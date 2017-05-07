@@ -321,7 +321,7 @@ MonoBehaviour:
   m_ShadowmapMode: 0
   m_Cameras:
   - {fileID: 309691112}
-  m_CurrentCamera: {fileID: 0}
+  m_CurrentCamera: {fileID: 1082455772}
   m_Size: {x: 10, y: 10, z: 20}
   m_SpotNear: 0.1
   m_SpotFar: 1
@@ -1420,6 +1420,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1e2a39fde8ec7e43ad338957a8e969e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loadLevel: EndCredits
   gameOver: 0
   restart: 0
   jellyMob: {fileID: 54265085176274432, guid: a924ce16fcf75e94abf3baecc8861794, type: 2}

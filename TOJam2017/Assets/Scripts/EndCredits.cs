@@ -7,9 +7,9 @@ using UnityEngine.SceneManagement;
 public class EndCredits : MonoBehaviour
 {
     public Image gameOverImg;
-    public Image creditsImg;
     public string loadLevel;
     public GameObject hiScores;
+    public GameObject creditsPanel;
     public Text hiScoreField;
 
     private bool exit = false;
@@ -31,7 +31,7 @@ public class EndCredits : MonoBehaviour
     {
         string hiscoreText = System.IO.File.ReadAllText("hiscore.txt");
         gameOverImg.canvasRenderer.SetAlpha(0.0f);
-        creditsImg.canvasRenderer.SetAlpha(0.0f);
+        //creditsImg.canvasRenderer.SetAlpha(0.0f);
 
         hiScoreField.text = hiscoreText;
         hiScores.SetActive(false);
@@ -76,12 +76,12 @@ public class EndCredits : MonoBehaviour
 
     void FadeInCredits()
     {
-        creditsImg.CrossFadeAlpha(1.0f, 1.5f, false);
+        creditsPanel.SetActive(true);
     }
 
     void FadeOutCredits()
     {
-        creditsImg.CrossFadeAlpha(0.0f, 1.5f, false);
+        creditsPanel.SetActive(false);
     }
 
     IEnumerator LoadCredits()
@@ -90,9 +90,11 @@ public class EndCredits : MonoBehaviour
         yield return new WaitForSeconds(2.0f);
         FadeOutEnd();
         yield return new WaitForSeconds(2.0f);
-        FadeInCredits();
+        //FadeInCredits();
+        creditsPanel.SetActive(true);
         yield return new WaitForSeconds(2.0f);
-        FadeOutCredits();
+        //FadeOutCredits();
+        creditsPanel.SetActive(false);
         yield return new WaitForSeconds(2.0f);
         hiScores.SetActive(true);
     }

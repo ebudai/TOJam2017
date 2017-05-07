@@ -279,9 +279,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameOverImg: {fileID: 851167689}
-  creditsImg: {fileID: 0}
   loadLevel: Splash
   hiScores: {fileID: 146969396}
+  creditsPanel: {fileID: 1995736956}
   hiScoreField: {fileID: 1149907546}
 --- !u!1 &467462701
 GameObject:
@@ -681,7 +681,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1995736957
 RectTransform:
   m_ObjectHideFlags: 0

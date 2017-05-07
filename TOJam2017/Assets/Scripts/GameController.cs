@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour 
 {
+    public string loadLevel;
 	private static GameController instance;
 	public static GameController Instance
 	{
@@ -52,7 +54,7 @@ public class GameController : MonoBehaviour
 		if (instance == null)
 		{
 			instance = this;
-			DontDestroyOnLoad(gameObject);
+			//DontDestroyOnLoad(gameObject);
 		}
 		else if (instance != this)
 		{
@@ -84,6 +86,10 @@ public class GameController : MonoBehaviour
 #else
             Application.Quit();
 #endif
+        }
+        if (gameOver)
+        {
+            SceneManager.LoadScene(loadLevel);
         }
     }
 

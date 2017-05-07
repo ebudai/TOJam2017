@@ -77,7 +77,6 @@ public class PilotController : MonoBehaviour
         HandleRotation();
         HandleThrusting();
         HandleRadar();
-        //HandleShooting();
         //HandleLaserSounds();
         // HandleGunnerAiming();
         int score = GameController.Instance.GetScore();
@@ -141,17 +140,6 @@ public class PilotController : MonoBehaviour
             yield return new WaitForSeconds(0.2f);
         }
     }
-
-    //void HandleShooting()
-    //{
-    //    if (dying) return;
-    //    if (Input.GetAxis("Fire") != 0)
-    //    {
-    //        laserSound.Play();
-    //        GameObject newShot = Instantiate(shot, transform.position + (transform.forward * 5.0f), transform.rotation);
-    //        newShot.GetComponent<Rigidbody>().AddForce(transform.forward * 6000);
-    //    }
-    //}
 
     private void HandleThrusting()
     {
@@ -264,50 +252,5 @@ public class PilotController : MonoBehaviour
         noticePanel.SetActive(true);
         int lives = GameController.Instance.GetLives();
         noticeText.text = lives.ToString()+" LIVES LEFT";
-
-        //StartCoroutine(Test3());
-        //Test3();
-    }
-
-    //void Test3()
-    //{
-    //    bool exitLoop = false;
-    //    while(!exitLoop)
-    //    {
-    //        if (Input.anyKeyDown)
-    //        {
-    //            exitLoop = true;
-    //            noticeText.text = "";
-    //            noticePanel.SetActive(false);
-    //            transform.position = new Vector3(0.0f, 0.0f, 0.0f);
-    //            transform.rotation = transform.rotation = Quaternion.identity;
-    //            invuln = false;
-    //            dying = false;
-    //            health = 100;
-    //        }
-    //        Thread.Sleep(200);
-    //    }
-    //}
-
-    IEnumerator ResetPlayer()
-    {
-        ////UnityEditor.EditorApplication.isPlaying = false;
-        //while (true)
-        //{
-        //    if (Input.GetAxis("Fire") != 0)
-        //    {
-        //        break;
-        //    }
-        //    yield return new WaitForSeconds(0.2f);
-        //}
-        //reset to start
-        noticeText.text = "";
-        noticePanel.SetActive(false);
-        transform.position = new Vector3(0.0f, 0.0f, 0.0f);
-        transform.rotation = transform.rotation = Quaternion.identity;
-        invuln = false;
-        dying = false;
-        health = 100;
-        yield return new WaitForSeconds(0.1f);
     }
 }
