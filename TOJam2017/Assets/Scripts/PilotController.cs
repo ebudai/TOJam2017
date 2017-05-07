@@ -68,7 +68,7 @@ public class PilotController : MonoBehaviour
         CollisionDelegator delegator = gameObject.AddComponent<CollisionDelegator>() as CollisionDelegator;
         delegator.attach(GameController.Instance.handleEnterCollision, GameController.Instance.handleExitCollision);
 
-        //StartCoroutine(HandleShooting());
+        StartCoroutine(HandleShooting());
     }
 
     // Update is called once per frame
@@ -77,7 +77,7 @@ public class PilotController : MonoBehaviour
         HandleRotation();
         HandleThrusting();
         HandleRadar();
-        HandleShooting();
+        //HandleShooting();
         //HandleLaserSounds();
         // HandleGunnerAiming();
         int score = GameController.Instance.GetScore();
@@ -90,6 +90,17 @@ public class PilotController : MonoBehaviour
             transform.rotation = transform.rotation = Quaternion.identity;
             invuln = false;
             dying = false;
+            healthLevels[10].SetActive(true);
+            healthLevels[9].SetActive(false);
+            healthLevels[8].SetActive(false);
+            healthLevels[7].SetActive(false);
+            healthLevels[6].SetActive(false);
+            healthLevels[5].SetActive(false);
+            healthLevels[4].SetActive(false);
+            healthLevels[3].SetActive(false);
+            healthLevels[2].SetActive(false);
+            healthLevels[1].SetActive(false);
+            healthLevels[0].SetActive(false);
             health = 100;
         }
     }
@@ -117,16 +128,30 @@ public class PilotController : MonoBehaviour
     //    lastFrameParticleCount = cannon.particleCount;
     //}
 
-    void HandleShooting()
+    IEnumerator HandleShooting()
     {
-        if (dying) return;
-        if (Input.GetAxis("Fire") != 0)
+        while(true)
         {
-            laserSound.Play();
-            GameObject newShot = Instantiate(shot, transform.position + (transform.forward * 5.0f), transform.rotation);
-            newShot.GetComponent<Rigidbody>().AddForce(transform.forward * 6000);
+            if (Input.GetAxis("Fire") != 0)
+            {
+                laserSound.Play();
+                GameObject newShot = Instantiate(shot, transform.position + (transform.forward * 5.0f), transform.rotation);
+                newShot.GetComponent<Rigidbody>().AddForce(transform.forward * 6000);
+            }
+            yield return new WaitForSeconds(0.2f);
         }
     }
+
+    //void HandleShooting()
+    //{
+    //    if (dying) return;
+    //    if (Input.GetAxis("Fire") != 0)
+    //    {
+    //        laserSound.Play();
+    //        GameObject newShot = Instantiate(shot, transform.position + (transform.forward * 5.0f), transform.rotation);
+    //        newShot.GetComponent<Rigidbody>().AddForce(transform.forward * 6000);
+    //    }
+    //}
 
     private void HandleThrusting()
     {
@@ -237,7 +262,8 @@ public class PilotController : MonoBehaviour
         GameController.Instance.LoseLife();
 
         noticePanel.SetActive(true);
-        noticeText.text = "2 LIVES LEFT";
+        int lives = GameController.Instance.GetLives();
+        noticeText.text = lives.ToString()+" LIVES LEFT";
 
         //StartCoroutine(Test3());
         //Test3();

@@ -257,6 +257,11 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public int GetLives()
+    {
+        return pLives;
+    }
+
     public int GetScore()
     {
         return score;
