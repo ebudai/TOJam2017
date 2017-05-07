@@ -18,14 +18,14 @@ public class SplashFade : MonoBehaviour {
 
     void Update()
     {
-        if (Input.GetKeyDown("joystick button 0"))
-        {
-            getNames = true;
-        }
-
         if (Input.GetKey(KeyCode.Escape))
         {
             exit = true;
+        }
+
+        if (Input.GetKeyDown("joystick button 0"))
+        {
+            getNames = true;
         }
 
         if (Input.GetKey(KeyCode.Return))

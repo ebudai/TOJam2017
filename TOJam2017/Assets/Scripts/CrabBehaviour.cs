@@ -16,6 +16,7 @@ public class CrabBehaviour : MonoBehaviour
     //Animator anim;
     AudioSource fireSound;
     AudioSource flybySound;
+    AudioSource deathSound;
 
     private BotState myState = new BotState();
     private BotCommandStruct myCommands = new BotCommandStruct();
@@ -24,7 +25,7 @@ public class CrabBehaviour : MonoBehaviour
     private List<SubsumptionRule> rulesList = new List<SubsumptionRule>();
 
     private float nextFire = 0;
-
+    private float health = 30;
     void Start()
     {
         Rigidbody rigidBody = GetComponent<Rigidbody>();
@@ -36,6 +37,7 @@ public class CrabBehaviour : MonoBehaviour
         var aSources = gameObject.GetComponents<AudioSource>();
         fireSound = aSources[0];
         flybySound = aSources[1];
+        deathSound = aSources[2];
 
         myState.playerSpotted = false;
         myState.alive = true;
@@ -74,17 +76,23 @@ public class CrabBehaviour : MonoBehaviour
 
     }
 
+    public bool isAlive()
+    {
+        return myState.alive;
+    }
+
     public void Die()
     {
         Rigidbody rigidBody = GetComponent<Rigidbody>();
+        rigidBody.AddTorque(new Vector3(0.0f,1.0f,0.0f));
         rigidBody.velocity = Vector3.zero;
-
         myState.alive = false;
         //anim.StopPlayback();
 
-        //death sound
-        //audio2.Play();
+        GameController.Instance.AddScore(scoreValue);
 
+        //death sound
+        deathSound.Play();
         Destroy(gameObject, 1f);
     }
 
@@ -111,7 +119,7 @@ public class CrabBehaviour : MonoBehaviour
                 myState.desiredHeading = desiredHeading;
                 myState.dirToPlayer = desiredHeading.normalized;
                 myState.distToPlayer = Vector3.Distance(playerPos, transform.position);
-               // Debug.Log("distToPlayer: " + myState.distToPlayer);
+                // Debug.Log("distToPlayer: " + myState.distToPlayer);
                 //visual debugging
                 //Debug.DrawRay(transform.position, transform.forward * 15, Color.blue);
                 //Debug.DrawRay(transform.position, rigidBody.angularVelocity * 10, Color.black);
@@ -125,12 +133,15 @@ public class CrabBehaviour : MonoBehaviour
     IEnumerator FollowPlayer()
     {
         yield return new WaitForSeconds(UnityEngine.Random.Range(0.5f, 1.5f));
+        var anim = GetComponent<Animation>();
         Rigidbody rigidBody = GetComponent<Rigidbody>();
         while (myState.alive)
         {
             //clear commands
             myCommands = new BotCommandStruct();
             myCommands.thrust = 0;
+            anim.Stop();
+
             //Run behaviours
             foreach (KeyValuePair<int, SubsumptionRule> kvp in SubsumptionRules)
             {
@@ -159,14 +170,17 @@ public class CrabBehaviour : MonoBehaviour
                 fireSound.Play();
                 //need two shots here, one on right, one on left
                 //spawn them from the loc of hard pts
-                var anim = GetComponent<Animation>();
+                var player = GameObject.Find("PlayerShip");
                 anim["Take 001"].time = 0.50f;
                 anim.Play();
-                GameObject leftShot = (GameObject)Instantiate(shot, LeftHardPt.position, transform.rotation);
-                GameObject rightShot = (GameObject)Instantiate(shot, RightHardPt.position, transform.rotation);
+                GameObject leftShot = (GameObject)Instantiate(shot, LeftHardPt.position + transform.forward * 5, transform.rotation);
+                GameObject rightShot = (GameObject)Instantiate(shot, RightHardPt.position + transform.forward * 5, transform.rotation);
 
-                leftShot.GetComponent<Rigidbody>().AddForce(transform.forward * 6000);
-                rightShot.GetComponent<Rigidbody>().AddForce(transform.forward * 6000);
+                Vector3 desiredHeadingRight = player.transform.position - RightHardPt.position;
+                Vector3 desiredHeadingLeft = player.transform.position - LeftHardPt.position;
+
+                leftShot.GetComponent<Rigidbody>().AddForce(desiredHeadingLeft.normalized * 6000);
+                rightShot.GetComponent<Rigidbody>().AddForce(desiredHeadingRight.normalized * 6000);
 
                 nextFire = Time.time + fireRate;
             }
@@ -181,53 +195,12 @@ public class CrabBehaviour : MonoBehaviour
     //========================================================================
     void RunAway()
     {
-        //if (myState.distToPlayer <= 3)
-        //{
-        //    myCommands.velocity = myState.closestMoveDir * speed * -1;
-        //}
-    }
-
-    void AttackPlayer()
-    {
         Rigidbody rigidBody = GetComponent<Rigidbody>();
         Collider playerCollider = null;
 
-        //change direction to player
-        var angularVelocityError = rigidBody.angularVelocity * -1;
-        var angularVelocityCorrection = angularVelocityController.Update(angularVelocityError, 0.1f);
-        myCommands.angularCorrection = angularVelocityCorrection;
-        var headingError = Vector3.Cross(transform.forward, myState.desiredHeading);
-        var headingCorrection = headingController.Update(headingError, 0.1f);
-        myCommands.torque = headingCorrection;
-
-        var player = GameObject.Find("PlayerShip");
-        if (player != null)
+        if (myState.distToPlayer <= 25)
         {
-            playerCollider = player.GetComponent<Collider>();
-            if (playerCollider != null)
-            {
-                var bounds = playerCollider.bounds;
-
-                //raycast on target
-                var lineToTarget = new Ray(rigidBody.position, transform.forward);
-                if (bounds.IntersectRay(lineToTarget))
-                {
-                    myCommands.fire = true;
-                    myCommands.thrust = speed;
-                    //myCommands.firingAngle = direction;
-                }
-            }
-        }
-    }
-
-    void Idle()
-    {
-        Rigidbody rigidBody = GetComponent<Rigidbody>();
-        Collider playerCollider = null;
-
-        if (myState.distToPlayer <= 15)
-        {
-            if (!flybySound.isPlaying)
+            if (myState.distToPlayer < 15 && !flybySound.isPlaying)
             {
                 flybySound.Play();
             }
@@ -250,14 +223,81 @@ public class CrabBehaviour : MonoBehaviour
                     var bounds = playerCollider.bounds;
 
                     //raycast on target
-                    var lineToTarget = new Ray(rigidBody.position, transform.forward);
+                    var lineToTarget = new Ray(transform.position, transform.forward);
                     if (!bounds.IntersectRay(lineToTarget))
                     {
-                        myCommands.thrust = speed;
+                        myCommands.thrust = speed * 2.0f;
                         //myCommands.firingAngle = direction;
                     }
                 }
             }
+        }
+    }
+
+    void AttackPlayer()
+    {
+        Rigidbody rigidBody = GetComponent<Rigidbody>();
+        Collider playerCollider = null;
+
+        var angularVelocityError = rigidBody.angularVelocity * -1;
+        var angularVelocityCorrection = angularVelocityController.Update(angularVelocityError, 0.1f);
+        myCommands.angularCorrection = angularVelocityCorrection;
+        var headingError = Vector3.Cross(transform.forward, myState.desiredHeading);
+        var headingCorrection = headingController.Update(headingError, 0.1f);
+        myCommands.torque = headingCorrection;
+        myCommands.thrust = speed / 2.0f;
+
+        var player = GameObject.Find("PlayerShip");
+        if (player != null)
+        {
+            playerCollider = player.GetComponent<Collider>();
+            if (playerCollider != null)
+            {
+                var bounds = playerCollider.bounds;
+                //raycast on target
+                var lineToTarget = new Ray(LeftHardPt.position, transform.forward);
+                if (bounds.IntersectRay(lineToTarget))
+                {
+                    myCommands.fire = true;
+                    myCommands.thrust = speed;
+                }
+                lineToTarget = new Ray(RightHardPt.position, transform.forward);
+                if (bounds.IntersectRay(lineToTarget))
+                {
+                    myCommands.fire = true;
+                    myCommands.thrust = speed;
+                }
+            }
+        }
+    }
+
+    void Idle()
+    {
+        //Rigidbody rigidBody = GetComponent<Rigidbody>();
+        //Vector3 vecRight = Vector3.Cross(Vector3.up, Vector3.forward);
+        //Vector3 vecLeft = Vector3.Cross(Vector3.forward, Vector3.up);
+        //if (UnityEngine.Random.Range(-1.0f, 1.0f) > 0)
+        //{
+        //    var headingError = Vector3.Cross(transform.forward, vecLeft);
+        //    var headingCorrection = headingController.Update(headingError, 0.1f);
+        //    myCommands.torque = headingCorrection;
+        //}
+        //else
+        //{
+        //    var headingError = Vector3.Cross(transform.forward, vecRight);
+        //    var headingCorrection = headingController.Update(headingError, 0.1f);
+        //    myCommands.torque = headingCorrection;
+        //}
+
+        //myCommands.thrust = speed;
+    }
+
+    public void TakeHit()
+    {
+        health -= 5;
+        if (health <= 0)
+        {
+            Die();
         }
     }
 }
