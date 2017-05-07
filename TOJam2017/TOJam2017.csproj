@@ -137,7 +137,6 @@
     <Compile Include="Assets\Scripts\PilotController.cs" />
     <Compile Include="Assets\Scripts\SplashFade.cs" />
     <Compile Include="Assets\Scripts\Subsumption.cs" />
-    <Compile Include="Assets\Scripts\Underwater.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\LightShafts\ColorFilter.shader" />

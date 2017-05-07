@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -67,7 +68,7 @@ public class PilotController : MonoBehaviour
         CollisionDelegator delegator = gameObject.AddComponent<CollisionDelegator>() as CollisionDelegator;
         delegator.attach(GameController.Instance.handleEnterCollision, GameController.Instance.handleExitCollision);
 
-        StartCoroutine(HandleShooting());
+        //StartCoroutine(HandleShooting());
     }
 
     // Update is called once per frame
@@ -81,6 +82,16 @@ public class PilotController : MonoBehaviour
         // HandleGunnerAiming();
         int score = GameController.Instance.GetScore();
         scorePanel.text = score.ToString();
+        if (dying && Input.anyKeyDown)
+        {
+            noticeText.text = "";
+            noticePanel.SetActive(false);
+            transform.position = new Vector3(0.0f, 0.0f, 0.0f);
+            transform.rotation = transform.rotation = Quaternion.identity;
+            invuln = false;
+            dying = false;
+            health = 100;
+        }
     }
 
     private void HandleRadar()
@@ -106,20 +117,14 @@ public class PilotController : MonoBehaviour
     //    lastFrameParticleCount = cannon.particleCount;
     //}
 
-    IEnumerator HandleShooting()
+    void HandleShooting()
     {
-        while (true)
+        if (dying) return;
+        if (Input.GetAxis("Fire") != 0)
         {
-            if (dying) continue;
-            if (Input.GetAxis("Fire") != 0)
-            {
-                laserSound.Play();
-                GameObject newShot = (GameObject)Instantiate(shot, transform.position + (transform.forward * 5.0f), transform.rotation);
-                newShot.GetComponent<Rigidbody>().AddForce(transform.forward * 6000);
-            }
-            //if (Input.GetAxis("Gunner Fire") != 0) gunnerCannon.Play();
-            //else gunnerCannon.Stop();
-            yield return new WaitForSeconds(0.2f);
+            laserSound.Play();
+            GameObject newShot = Instantiate(shot, transform.position + (transform.forward * 5.0f), transform.rotation);
+            newShot.GetComponent<Rigidbody>().AddForce(transform.forward * 6000);
         }
     }
 
@@ -218,7 +223,7 @@ public class PilotController : MonoBehaviour
             healthLevels[0].SetActive(true);
             healthLevels[1].SetActive(false);
         }
-        if (health <= 0)
+        if (health <= 0 && !dying)
         {
             Die();
         }
@@ -234,28 +239,29 @@ public class PilotController : MonoBehaviour
         noticePanel.SetActive(true);
         noticeText.text = "2 LIVES LEFT";
 
-        StartCoroutine(Test3());
+        //StartCoroutine(Test3());
+        //Test3();
     }
 
-    IEnumerator Test3()
-    {
-        bool exitLoop = false;
-        while(!exitLoop)
-        {
-            if (Input.GetAxis("Fire") != 0)
-            {
-                exitLoop = true;
-                noticeText.text = "";
-                noticePanel.SetActive(false);
-                transform.position = new Vector3(0.0f, 0.0f, 0.0f);
-                transform.rotation = transform.rotation = Quaternion.identity;
-                invuln = false;
-                dying = false;
-                health = 100;
-            }
-            yield return new WaitForSeconds(0.2f);
-        }
-    }
+    //void Test3()
+    //{
+    //    bool exitLoop = false;
+    //    while(!exitLoop)
+    //    {
+    //        if (Input.anyKeyDown)
+    //        {
+    //            exitLoop = true;
+    //            noticeText.text = "";
+    //            noticePanel.SetActive(false);
+    //            transform.position = new Vector3(0.0f, 0.0f, 0.0f);
+    //            transform.rotation = transform.rotation = Quaternion.identity;
+    //            invuln = false;
+    //            dying = false;
+    //            health = 100;
+    //        }
+    //        Thread.Sleep(200);
+    //    }
+    //}
 
     IEnumerator ResetPlayer()
     {
