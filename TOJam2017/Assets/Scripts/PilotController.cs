@@ -12,6 +12,8 @@ public class PilotController : MonoBehaviour {
     private float MaxThrust { get; set; }
     private Rigidbody ship;
     public Camera playerCamera;
+    public Camera radarTopCamera;
+    public Camera radarFrontCamera;
     private ParticleSystem cannon;
     private ParticleSystem gunnerCannon;
     private int lastFrameParticleCount;
@@ -43,10 +45,18 @@ public class PilotController : MonoBehaviour {
 	void Update () {
         HandleRotation();
         HandleThrusting();
+        HandleRadar();
         //HandleShooting();
         //HandleLaserSounds();
        // HandleGunnerAiming();
 	}
+
+    private void HandleRadar()
+    {
+        radarTopCamera.transform.position = transform.position + new Vector3(0, 1100, 0);
+        radarFrontCamera.transform.position = transform.position + new Vector3(0, 0, 1100);
+        //radarTopCamera.transform.rotation.SetLookRotation(transform.position, new Vector3(0, transform.rotation.y, 0));
+    }
     
     //private void HandleGunnerAiming()
     //{
@@ -89,6 +99,8 @@ public class PilotController : MonoBehaviour {
 
         ship.AddRelativeTorque(0, -horizontalAmount, 0);
         ship.AddRelativeTorque(-verticalAmount, 0, -rotationAmount);
+        radarTopCamera.transform.RotateAroundLocal(new Vector3(0, -1, 0), horizontalAmount / 180 * (float)Math.PI);
+        radarFrontCamera.transform.RotateAroundLocal(new Vector3(0, 0, 1), verticalAmount / 180 * (float)Math.PI);
     }
 
     private T Clamp<T>(T value, T low, T high) where T : IComparable<T>
