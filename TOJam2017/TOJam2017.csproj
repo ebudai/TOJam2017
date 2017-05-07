@@ -81,6 +81,7 @@
     <Compile Include="Assets\Scripts\CollisionDelegator.cs" />
     <Compile Include="Assets\Scripts\CrabBehaviour.cs" />
     <Compile Include="Assets\Scripts\EndCredits.cs" />
+    <Compile Include="Assets\Scripts\ExplosionAnimator.cs" />
     <Compile Include="Assets\Scripts\GameController.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\JellyBehaviour.cs" />

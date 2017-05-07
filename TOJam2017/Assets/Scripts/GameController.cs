@@ -146,7 +146,7 @@ public class GameController : MonoBehaviour
                     var jellyBrain = jelly.GetComponent<JellyBehaviour>();
                     if (jellyBrain.isDead())
                     {
-                        Debug.Log("Removing dead jelly");
+                        //Debug.Log("Removing dead jelly");
                         removeList.Add(jelly);
                     }
                 }
@@ -161,7 +161,7 @@ public class GameController : MonoBehaviour
                 //not enough jellies, create!
                 for (int i = jellies.Count; i < jellyDensity; i++)
                 {
-                    Debug.Log("Spawning jelly: " + i);
+                    //Debug.Log("Spawning jelly: " + i);
                     //spawn a jelly from 10-100 units away in a random dir...
                     float xOffset = Random.Range(-60f, 60f);
                     float yOffset = Random.Range(-60f, 60f);
@@ -459,7 +459,12 @@ public class GameController : MonoBehaviour
 
 	public void handleEnterCollision (GameObject trigger, Collider collided)  
 	{
-        //Debug.Log(trigger.tag + " hit " + collided.tag);
+        
+        if (trigger.tag == "Projectile")
+        {
+            Debug.Log(trigger.tag + " hit " + collided.tag);
+            trigger.GetComponent<MissileBehaviour>().Explode();
+        }
 		//if (trigger.tag == "<SomeProjectile>") 
 		//{
 		//	if (collided.tag == "Wall") 

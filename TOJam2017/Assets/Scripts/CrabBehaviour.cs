@@ -15,7 +15,7 @@ public class CrabBehaviour : MonoBehaviour
 
     //Animator anim;
     AudioSource fireSound;
-    //AudioSource deathSound;
+    AudioSource flybySound;
 
     private BotState myState = new BotState();
     private BotCommandStruct myCommands = new BotCommandStruct();
@@ -35,7 +35,7 @@ public class CrabBehaviour : MonoBehaviour
 
         var aSources = gameObject.GetComponents<AudioSource>();
         fireSound = aSources[0];
-        //deathSound = aSources[1];
+        flybySound = aSources[1];
 
         myState.playerSpotted = false;
         myState.alive = true;
@@ -227,6 +227,11 @@ public class CrabBehaviour : MonoBehaviour
 
         if (myState.distToPlayer <= 15)
         {
+            if (!flybySound.isPlaying)
+            {
+                flybySound.Play();
+            }
+
             //change direction away from player
             var angularVelocityError = rigidBody.angularVelocity * -1;
             var angularVelocityCorrection = angularVelocityController.Update(angularVelocityError, 0.1f);
