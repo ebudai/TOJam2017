@@ -85,7 +85,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-        IEnumerator SpawnJellies()
+    IEnumerator SpawnJellies()
     {
         //find spawn Jellies
         GameObject[] jelliesArr = GameObject.FindGameObjectsWithTag("Jelly");
