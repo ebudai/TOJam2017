@@ -8,6 +8,7 @@ public class PilotController : MonoBehaviour
 {
     public GameObject shot;
     public Text scorePanel;
+    public GameObject noticePanel;
 
     public bool invuln = false;
     public bool dying = false;
@@ -224,18 +225,33 @@ public class PilotController : MonoBehaviour
 
     void Die()
     {
-        //dying = true;
-        //invuln = true;
-        //Stop();
-        //GameController.Instance.LoseLife();
-        // StartCoroutine(ResetPlayer());
+        dying = true;
+        invuln = true;
+        Stop();
+        GameController.Instance.LoseLife();
+        StartCoroutine(ResetPlayer());
     }
 
-    //IEnumerator ResetPlayer()
-    //{
-    //    transform.position = new Vector3(0.0f, 0.0f, 0.0f);
-    //    transform.rotation = transform.rotation = Quaternion.identity;
-    //    invuln = false;
-    //    dying = false;
-    //}
+    IEnumerator ResetPlayer()
+    {
+        noticePanel.SetActive(true);
+        Text noticeText = noticePanel.GetComponent<Text>();
+        noticeText.text = "2 LIVES LEFT";
+        UnityEditor.EditorApplication.isPlaying = false;
+        while (true)
+        {
+            if (Input.GetAxis("Fire") != 0)
+            {
+                break;
+            }
+            yield return new WaitForSeconds(0.2f);
+        }
+        //reset to start
+        noticeText.text = "";
+        noticePanel.SetActive(false);
+        transform.position = new Vector3(0.0f, 0.0f, 0.0f);
+        transform.rotation = transform.rotation = Quaternion.identity;
+        invuln = false;
+        dying = false;
+    }
 }

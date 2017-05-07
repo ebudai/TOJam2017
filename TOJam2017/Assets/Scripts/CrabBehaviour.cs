@@ -132,7 +132,7 @@ public class CrabBehaviour : MonoBehaviour
     //executes subsumption rules and commands
     IEnumerator FollowPlayer()
     {
-        yield return new WaitForSeconds(UnityEngine.Random.Range(0.5f, 1.5f));
+        yield return new WaitForSeconds(UnityEngine.Random.Range(1.5f, 3.0f));
         var anim = GetComponent<Animation>();
         Rigidbody rigidBody = GetComponent<Rigidbody>();
         while (myState.alive)
