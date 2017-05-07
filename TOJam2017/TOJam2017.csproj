@@ -79,8 +79,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\PilotController.cs" />
+    <Compile Include="Assets\Scripts\CrabBehaviour.cs" />
     <Compile Include="Assets\Scripts\EndCredits.cs" />
     <Compile Include="Assets\Scripts\SplashFade.cs" />
+    <Compile Include="Assets\Scripts\Subsumption.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

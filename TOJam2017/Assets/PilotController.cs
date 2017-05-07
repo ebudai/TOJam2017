@@ -5,8 +5,10 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class PilotController : MonoBehaviour {
-    
+    public bool invuln = false;
+    public bool dying = false;
     public Image reticleUI;
+    //private float Thrust { get; set; }
     private float MaxThrust { get; set; }
     private Rigidbody ship;
     public Camera playerCamera;
