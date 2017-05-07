@@ -69,6 +69,6 @@ public class JellyBehaviour : MonoBehaviour
         //death sound
         //audio2.Play();
 
-        Destroy(gameObject, 1f);
+        Destroy(gameObject);
     }
 }
