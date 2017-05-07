@@ -87,10 +87,10 @@
     <Compile Include="Assets\Scripts\EndCredits.cs" />
     <Compile Include="Assets\Scripts\ExplosionAnimator.cs" />
     <Compile Include="Assets\Scripts\GameController.cs" />
-    <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\JellyBehaviour.cs" />
     <Compile Include="Assets\Scripts\MissileBehaviour.cs" />
     <Compile Include="Assets\Scripts\PilotController.cs" />
+    <Compile Include="Assets\Scripts\PlayerLogin.cs" />
     <Compile Include="Assets\Scripts\SplashFade.cs" />
     <Compile Include="Assets\Scripts\Subsumption.cs" />
   </ItemGroup>

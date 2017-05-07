@@ -27,7 +27,6 @@ public class GameController : MonoBehaviour
     public Rigidbody crabMob;
     public int jellyDensity = 100;
 
-
 	private float xMin = -5f;
 	private float xMax = 5f;
 	private float zMin = -14f;
