@@ -110,12 +110,12 @@ public class CrabBehaviour : MonoBehaviour
 
                 myState.desiredHeading = desiredHeading;
                 myState.dirToPlayer = desiredHeading.normalized;
-                myState.distToPlayer = Vector3.Distance(playerPos, rigidBody.position);
-
+                myState.distToPlayer = Vector3.Distance(playerPos, transform.position);
+               // Debug.Log("distToPlayer: " + myState.distToPlayer);
                 //visual debugging
-                Debug.DrawRay(transform.position, transform.forward * 15, Color.blue);
-                Debug.DrawRay(transform.position, rigidBody.angularVelocity * 10, Color.black);
-                Debug.DrawRay(transform.position, desiredHeading, Color.magenta);
+                //Debug.DrawRay(transform.position, transform.forward * 15, Color.blue);
+                //Debug.DrawRay(transform.position, rigidBody.angularVelocity * 10, Color.black);
+                //Debug.DrawRay(transform.position, desiredHeading, Color.magenta);
             }
         }
     }
@@ -124,10 +124,10 @@ public class CrabBehaviour : MonoBehaviour
     //executes subsumption rules and commands
     IEnumerator FollowPlayer()
     {
+        yield return new WaitForSeconds(UnityEngine.Random.Range(0.5f, 1.5f));
         Rigidbody rigidBody = GetComponent<Rigidbody>();
         while (myState.alive)
         {
-
             //clear commands
             myCommands = new BotCommandStruct();
             myCommands.thrust = 0;
@@ -222,18 +222,38 @@ public class CrabBehaviour : MonoBehaviour
 
     void Idle()
     {
-        //if (myState.distToPlayer <= 5)
-        //{
-        //    myCommands.velocity = new Vector3(0f, 0f, 0f);
-        //    if (myState.posDiffToPlayer.x > 0)
-        //    {
-        //        myCommands.velocity = Vector3.right * speed;
-        //    }
-        //    else
-        //    {
-        //        myCommands.velocity = Vector3.left * speed;
-        //    }
-        //}
+        Rigidbody rigidBody = GetComponent<Rigidbody>();
+        Collider playerCollider = null;
+
+        if (myState.distToPlayer <= 15)
+        {
+            //change direction away from player
+            var angularVelocityError = rigidBody.angularVelocity * -1;
+            var angularVelocityCorrection = angularVelocityController.Update(angularVelocityError, 0.1f);
+            myCommands.angularCorrection = angularVelocityCorrection;
+
+            var headingError = Vector3.Cross(transform.forward, myState.desiredHeading * -1.0f);
+            var headingCorrection = headingController.Update(headingError, 0.1f);
+            myCommands.torque = headingCorrection;
+
+            var player = GameObject.Find("PlayerShip");
+            if (player != null)
+            {
+                playerCollider = player.GetComponent<Collider>();
+                if (playerCollider != null)
+                {
+                    var bounds = playerCollider.bounds;
+
+                    //raycast on target
+                    var lineToTarget = new Ray(rigidBody.position, transform.forward);
+                    if (!bounds.IntersectRay(lineToTarget))
+                    {
+                        myCommands.thrust = speed;
+                        //myCommands.firingAngle = direction;
+                    }
+                }
+            }
+        }
     }
 }
 

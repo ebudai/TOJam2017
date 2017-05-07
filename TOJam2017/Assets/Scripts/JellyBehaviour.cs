@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class JellyBehaviour : MonoBehaviour
 {
+    public BotState myState;
     public float distThreshold;
     private void Start()
     {
         CollisionDelegator delegator = gameObject.AddComponent<CollisionDelegator>() as CollisionDelegator;
         delegator.attach(GameController.Instance.handleEnterCollision, GameController.Instance.handleExitCollision);
+
+        myState.alive = true;
         //start a coroutine that will "Bob" up and down
         StartCoroutine(Bob());
     }
@@ -28,6 +31,7 @@ public class JellyBehaviour : MonoBehaviour
                 float distToPlayer = Vector3.Distance(playerPos, rigidBody.position);
                 if (distToPlayer > distThreshold)
                 {
+                    //Debug.Log("Killing jelly");
                     Die();
                 }
             }
@@ -52,9 +56,14 @@ public class JellyBehaviour : MonoBehaviour
         }
     }
 
+    public bool isDead()
+    {
+        return myState.alive;
+    }
+
     public void Die()
     {
-        //myState.alive = false;
+        myState.alive = false;
         //anim.StopPlayback();
 
         //death sound

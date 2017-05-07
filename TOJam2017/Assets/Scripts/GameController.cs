@@ -42,6 +42,10 @@ public class GameController : MonoBehaviour
 	private GameObject[] hazards;
 	private GameObject[] spawns;
 
+    private List<Rigidbody> jellies = new List<Rigidbody>();
+    private List<Rigidbody> crabs = new List<Rigidbody>();
+    private int waveSize = 3;
+    private int level = 0;
 	//float theEnd = 0;
 
 	private void Awake()
@@ -61,7 +65,7 @@ public class GameController : MonoBehaviour
 	void Start () 
 	{
         StartCoroutine(SpawnJellies());
-        //StartCoroutine(SpawnWaves());
+        StartCoroutine(SpawnWaves());
     }
 
 	private int lastHazardCount = 0;
@@ -88,17 +92,19 @@ public class GameController : MonoBehaviour
     IEnumerator SpawnJellies()
     {
         //find spawn Jellies
-        GameObject[] jellies = GameObject.FindGameObjectsWithTag("Jelly");
+        GameObject[] jelliesArr = GameObject.FindGameObjectsWithTag("Jelly");
         var player = GameObject.Find("PlayerShip");
-        if (jellies.Length == 0)
+        if (jelliesArr.Length == 0)
         {
             //no jellies, create!
-            for (int i=0; i < jellyDensity; i++)
+            int i = 0;
+            for (i=0; i < jellyDensity; i++)
             {
+                //Debug.Log("Spawning jelly: " + i);
                 //spawn a jelly from 10-100 units away in a random dir...
-                float xOffset = Random.Range(-100f, 100.0f);
-                float yOffset = Random.Range(-100f, 100.0f);
-                float zOffset = Random.Range(-100f, 100.0f);
+                float xOffset = Random.Range(-60f, 60.0f);
+                float yOffset = Random.Range(-60f, 60.0f);
+                float zOffset = Random.Range(-60f, 60.0f);
 
                 if (xOffset < 0 && xOffset > -10)
                 {
@@ -124,19 +130,125 @@ public class GameController : MonoBehaviour
                 {
                     zOffset += 10;
                 }
-
+               // Debug.Log("spawnOffset: " + xOffset + "," + yOffset + "," + zOffset);
                 Vector3 spawnOffset = new Vector3(xOffset, yOffset, zOffset);
-                Instantiate(jellyMob, player.transform.position + spawnOffset, jellyMob.transform.rotation);
+                jellies.Add(Instantiate(jellyMob, player.transform.position + spawnOffset, jellyMob.transform.rotation));
             }
         }
 
-        //foreach (GameObject spawn in spawns)
-        //{
-        //    Instantiate(hazardPrefabs[1], spawn.transform.position, hazardPrefabs[1].transform.rotation);
-        //}
-        //yield return new WaitForSeconds(startWait);
         while (true)
         {
+            List<Rigidbody> removeList = new List<Rigidbody>();
+            foreach (Rigidbody jelly in jellies)
+            {
+                if (jelly != null)
+                {
+                    var jellyBrain = jelly.GetComponent<JellyBehaviour>();
+                    if (jellyBrain.isDead())
+                    {
+                        Debug.Log("Removing dead jelly");
+                        removeList.Add(jelly);
+                    }
+                }
+            }
+            foreach (Rigidbody jelly in removeList)
+            {
+                jellies.Remove(jelly);
+            }
+
+            if (jellies.Count < jellyDensity)
+            {
+                //not enough jellies, create!
+                for (int i = jellies.Count; i < jellyDensity; i++)
+                {
+                    Debug.Log("Spawning jelly: " + i);
+                    //spawn a jelly from 10-100 units away in a random dir...
+                    float xOffset = Random.Range(-60f, 60f);
+                    float yOffset = Random.Range(-60f, 60f);
+                    float zOffset = Random.Range(-60f, 60f);
+
+                    if (xOffset < 0 && xOffset > -20)
+                    {
+                        xOffset -= 20;
+                    }
+                    if (xOffset > 0 && xOffset < -20)
+                    {
+                        xOffset += 20;
+                    }
+                    if (yOffset < 0 && yOffset > -20)
+                    {
+                        yOffset -= 20;
+                    }
+                    if (yOffset > 0 && yOffset < -20)
+                    {
+                        yOffset += 20;
+                    }
+                    if (zOffset < 0 && zOffset > -20)
+                    {
+                        zOffset -= 20;
+                    }
+                    if (zOffset > 0 && zOffset < -20)
+                    {
+                        zOffset += 20;
+                    }
+                    //Debug.Log("spawnOffset: " + xOffset + "," + yOffset + "," + zOffset);
+                    Vector3 spawnOffset = new Vector3(xOffset, yOffset, zOffset);
+                    jellies.Add(Instantiate(jellyMob, player.transform.position + spawnOffset, jellyMob.transform.rotation));
+                }
+            }
+            yield return new WaitForSeconds(5.0f);
+        }
+    }
+
+    private bool waveSpawned = false;
+
+    IEnumerator SpawnWaves()
+    {
+        var player = GameObject.Find("PlayerShip");
+        while (true)
+        {
+            if (crabs.Count == 0 && !waveSpawned)
+            {
+                //no jellies, create!
+                int i = 0;
+                for (i = 0; i < waveSize; i++)
+                {
+                   //Debug.Log("Spawning crab: " + i);
+                    float xOffset = Random.Range(-60f, 60.0f);
+                    float yOffset = Random.Range(-60f, 60.0f);
+                    float zOffset = Random.Range(-60f, 60.0f);
+
+                    if (xOffset < 0 && xOffset > -10)
+                    {
+                        xOffset -= 10;
+                    }
+                    if (xOffset > 0 && xOffset < -10)
+                    {
+                        xOffset += 10;
+                    }
+                    if (yOffset < 0 && yOffset > -10)
+                    {
+                        yOffset -= 10;
+                    }
+                    if (yOffset > 0 && yOffset < -10)
+                    {
+                        yOffset += 10;
+                    }
+                    if (zOffset < 0 && zOffset > -10)
+                    {
+                        zOffset -= 10;
+                    }
+                    if (zOffset > 0 && zOffset < -10)
+                    {
+                        zOffset += 10;
+                    }
+                    //Debug.Log("spawnOffset: " + xOffset + "," + yOffset + "," + zOffset);
+                    Vector3 spawnOffset = new Vector3(xOffset, yOffset, zOffset);
+                    crabs.Add(Instantiate(crabMob, player.transform.position + spawnOffset, crabMob.transform.rotation));
+                }
+                waveSpawned = true;
+            }
+            yield return new WaitForSeconds(10.0f);
             //    if (hazardPrefabs.Length > 0)
             //    {
             //        for (int i = 0; i < hazardCount; i++)
@@ -154,37 +266,6 @@ public class GameController : MonoBehaviour
             //        }
             //    }
             //    yield return new WaitForSeconds(waveWait);
-        }
-    }
-
-    IEnumerator SpawnWaves()
-    {
-        ////find spawn points
-        //GameObject[] spawns = GameObject.FindGameObjectsWithTag("SpawnPointL1");
-        //foreach (GameObject spawn in spawns)
-        //{
-        //    Instantiate(hazardPrefabs[1], spawn.transform.position, hazardPrefabs[1].transform.rotation);
-        //}
-        //yield return new WaitForSeconds(startWait);
-        while (true)
-        {
-        //    if (hazardPrefabs.Length > 0)
-        //    {
-        //        for (int i = 0; i < hazardCount; i++)
-        //        {
-        //            var enemyIndex = i % 2;
-        //            var spawnPoint = spawns[Random.Range(0, spawns.Length)];
-        //            Instantiate(hazardPrefabs[enemyIndex], spawnPoint.transform.position, hazardPrefabs[enemyIndex].transform.rotation);
-
-        //            if (GameController.Instance.gameOver)
-        //            {
-        //                GameController.Instance.restart = true;
-        //                break;
-        //            }
-        //            yield return new WaitForSeconds(spawnWait);
-        //        }
-        //    }
-        //    yield return new WaitForSeconds(waveWait);
         }
     }
 
@@ -378,7 +459,7 @@ public class GameController : MonoBehaviour
 
 	public void handleEnterCollision (GameObject trigger, Collider collided)  
 	{
-        Debug.Log(trigger.tag + " hit " + collided.tag);
+        //Debug.Log(trigger.tag + " hit " + collided.tag);
 		//if (trigger.tag == "<SomeProjectile>") 
 		//{
 		//	if (collided.tag == "Wall") 
