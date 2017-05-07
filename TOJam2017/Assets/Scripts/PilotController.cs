@@ -134,22 +134,6 @@ public class PilotController : MonoBehaviour {
         }
     }
 
-    IEnumerator HandleShooting()
-    {
-        while (true)
-        {
-            if (Input.GetAxis("Fire") != 0)
-            {
-                laserSound.Play();
-                GameObject newShot = (GameObject)Instantiate(shot, transform.position + (transform.forward * 5.0f), transform.rotation);
-                newShot.GetComponent<Rigidbody>().AddForce(transform.forward * 6000);
-            }
-            //if (Input.GetAxis("Gunner Fire") != 0) gunnerCannon.Play();
-            //else gunnerCannon.Stop();
-            yield return new WaitForSeconds(0.2f);
-        }
-    }
-
     private void HandleRotation()
     {
         if (dying) return;
