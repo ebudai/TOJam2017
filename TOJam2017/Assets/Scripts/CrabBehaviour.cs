@@ -195,51 +195,6 @@ public class CrabBehaviour : MonoBehaviour
     //========================================================================
     void RunAway()
     {
-        //if (myState.distToPlayer <= 3)
-        //{
-        //    myCommands.velocity = myState.closestMoveDir * speed * -1;
-        //}
-    }
-
-    void AttackPlayer()
-    {
-        Rigidbody rigidBody = GetComponent<Rigidbody>();
-        Collider playerCollider = null;
-
-        //change direction to player
-        var angularVelocityError = rigidBody.angularVelocity * -1;
-        var angularVelocityCorrection = angularVelocityController.Update(angularVelocityError, 0.1f);
-        myCommands.angularCorrection = angularVelocityCorrection;
-        var headingError = Vector3.Cross(transform.forward, myState.desiredHeading);
-        var headingCorrection = headingController.Update(headingError, 0.1f);
-        myCommands.torque = headingCorrection;
-        myCommands.thrust = speed / 2.0f;
-        var player = GameObject.Find("PlayerShip");
-        if (player != null)
-        {
-            playerCollider = player.GetComponent<Collider>();
-            if (playerCollider != null)
-            {
-                var bounds = playerCollider.bounds;
-                //raycast on target
-                var lineToTarget = new Ray(LeftHardPt.position, transform.forward);
-                if (bounds.IntersectRay(lineToTarget))
-                {
-                    myCommands.fire = true;
-                    myCommands.thrust = speed;
-                }
-                lineToTarget = new Ray(RightHardPt.position, transform.forward);
-                if (bounds.IntersectRay(lineToTarget))
-                {
-                    myCommands.fire = true;
-                    myCommands.thrust = speed;
-                }
-            }
-        }
-    }
-
-    void Idle()
-    {
         Rigidbody rigidBody = GetComponent<Rigidbody>();
         Collider playerCollider = null;
 
@@ -277,6 +232,64 @@ public class CrabBehaviour : MonoBehaviour
                 }
             }
         }
+    }
+
+    void AttackPlayer()
+    {
+        Rigidbody rigidBody = GetComponent<Rigidbody>();
+        Collider playerCollider = null;
+
+        var angularVelocityError = rigidBody.angularVelocity * -1;
+        var angularVelocityCorrection = angularVelocityController.Update(angularVelocityError, 0.1f);
+        myCommands.angularCorrection = angularVelocityCorrection;
+        var headingError = Vector3.Cross(transform.forward, myState.desiredHeading);
+        var headingCorrection = headingController.Update(headingError, 0.1f);
+        myCommands.torque = headingCorrection;
+        myCommands.thrust = speed / 2.0f;
+
+        var player = GameObject.Find("PlayerShip");
+        if (player != null)
+        {
+            playerCollider = player.GetComponent<Collider>();
+            if (playerCollider != null)
+            {
+                var bounds = playerCollider.bounds;
+                //raycast on target
+                var lineToTarget = new Ray(LeftHardPt.position, transform.forward);
+                if (bounds.IntersectRay(lineToTarget))
+                {
+                    myCommands.fire = true;
+                    myCommands.thrust = speed;
+                }
+                lineToTarget = new Ray(RightHardPt.position, transform.forward);
+                if (bounds.IntersectRay(lineToTarget))
+                {
+                    myCommands.fire = true;
+                    myCommands.thrust = speed;
+                }
+            }
+        }
+    }
+
+    void Idle()
+    {
+        //Rigidbody rigidBody = GetComponent<Rigidbody>();
+        //Vector3 vecRight = Vector3.Cross(Vector3.up, Vector3.forward);
+        //Vector3 vecLeft = Vector3.Cross(Vector3.forward, Vector3.up);
+        //if (UnityEngine.Random.Range(-1.0f, 1.0f) > 0)
+        //{
+        //    var headingError = Vector3.Cross(transform.forward, vecLeft);
+        //    var headingCorrection = headingController.Update(headingError, 0.1f);
+        //    myCommands.torque = headingCorrection;
+        //}
+        //else
+        //{
+        //    var headingError = Vector3.Cross(transform.forward, vecRight);
+        //    var headingCorrection = headingController.Update(headingError, 0.1f);
+        //    myCommands.torque = headingCorrection;
+        //}
+
+        //myCommands.thrust = speed;
     }
 
     public void TakeHit()
