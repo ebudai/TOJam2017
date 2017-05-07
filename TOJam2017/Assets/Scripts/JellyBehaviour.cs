@@ -17,7 +17,7 @@ public class JellyBehaviour : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate ()
+    void FixedUpdate()
     {
         Rigidbody rigidBody = GetComponent<Rigidbody>();
         var player = GameObject.Find("PlayerShip");
@@ -36,13 +36,13 @@ public class JellyBehaviour : MonoBehaviour
                 }
             }
         }
-	}
+    }
 
     private float bobDir = 1.0f;
     IEnumerator Bob()
     {
         Rigidbody rigidBody = GetComponent<Rigidbody>();
-        while(true)
+        while (true)
         {
             //transform.forward == up for this model
             float dieRoll = Random.Range(0f, 6.0f);

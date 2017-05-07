@@ -81,11 +81,13 @@
     <Compile Include="Assets\LightShafts\LightShafts.Resources.cs" />
     <Compile Include="Assets\LightShafts\LightShafts.Utils.cs" />
     <Compile Include="Assets\LightShafts\LightShafts.cs" />
+    <Compile Include="Assets\RadarTopRotationLock.cs" />
     <Compile Include="Assets\Scripts\CollisionDelegator.cs" />
     <Compile Include="Assets\Scripts\CrabBehaviour.cs" />
     <Compile Include="Assets\Scripts\EndCredits.cs" />
     <Compile Include="Assets\Scripts\ExplosionAnimator.cs" />
     <Compile Include="Assets\Scripts\GameController.cs" />
+    <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\JellyBehaviour.cs" />
     <Compile Include="Assets\Scripts\MissileBehaviour.cs" />
     <Compile Include="Assets\Scripts\PilotController.cs" />
