@@ -8,6 +8,8 @@ public class PilotController : MonoBehaviour
 {
     public GameObject shot;
     public Text scorePanel;
+    public GameObject noticePanel;
+    public Text noticeText;
 
     public bool invuln = false;
     public bool dying = false;
@@ -224,18 +226,56 @@ public class PilotController : MonoBehaviour
 
     void Die()
     {
-        //dying = true;
-        //invuln = true;
-        //Stop();
-        //GameController.Instance.LoseLife();
-        // StartCoroutine(ResetPlayer());
+        dying = true;
+        invuln = true;
+        Stop();
+        GameController.Instance.LoseLife();
+
+        noticePanel.SetActive(true);
+        noticeText.text = "2 LIVES LEFT";
+
+        StartCoroutine(Test3());
     }
 
-    //IEnumerator ResetPlayer()
-    //{
-    //    transform.position = new Vector3(0.0f, 0.0f, 0.0f);
-    //    transform.rotation = transform.rotation = Quaternion.identity;
-    //    invuln = false;
-    //    dying = false;
-    //}
+    IEnumerator Test3()
+    {
+        bool exitLoop = false;
+        while(!exitLoop)
+        {
+            if (Input.GetAxis("Fire") != 0)
+            {
+                exitLoop = true;
+                noticeText.text = "";
+                noticePanel.SetActive(false);
+                transform.position = new Vector3(0.0f, 0.0f, 0.0f);
+                transform.rotation = transform.rotation = Quaternion.identity;
+                invuln = false;
+                dying = false;
+                health = 100;
+            }
+            yield return new WaitForSeconds(0.2f);
+        }
+    }
+
+    IEnumerator ResetPlayer()
+    {
+        ////UnityEditor.EditorApplication.isPlaying = false;
+        //while (true)
+        //{
+        //    if (Input.GetAxis("Fire") != 0)
+        //    {
+        //        break;
+        //    }
+        //    yield return new WaitForSeconds(0.2f);
+        //}
+        //reset to start
+        noticeText.text = "";
+        noticePanel.SetActive(false);
+        transform.position = new Vector3(0.0f, 0.0f, 0.0f);
+        transform.rotation = transform.rotation = Quaternion.identity;
+        invuln = false;
+        dying = false;
+        health = 100;
+        yield return new WaitForSeconds(0.1f);
+    }
 }

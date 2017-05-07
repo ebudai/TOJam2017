@@ -493,6 +493,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shot: {fileID: 1336355366346506, guid: 9afd4cf7c4e6ab643920774f1b393167, type: 2}
   scorePanel: {fileID: 2087698167}
+  noticePanel: {fileID: 1440064490}
+  noticeText: {fileID: 1336205070}
   invuln: 0
   dying: 0
   healthLevels:
@@ -1703,7 +1705,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 2 Lives Left
+  m_Text: 
 --- !u!222 &1336205071
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1758,7 +1760,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.873}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
