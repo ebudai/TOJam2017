@@ -42,6 +42,6 @@ public class MissileBehaviour : MonoBehaviour
 
     public void Die()
     {
-        Destroy(gameObject, 1f);
+        Destroy(gameObject);
     }
 }

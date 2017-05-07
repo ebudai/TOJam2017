@@ -64,11 +64,6 @@ public class JellyBehaviour : MonoBehaviour
     public void Die()
     {
         myState.alive = false;
-        //anim.StopPlayback();
-
-        //death sound
-        //audio2.Play();
-
         Destroy(gameObject, 1f);
     }
 }

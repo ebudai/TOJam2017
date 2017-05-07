@@ -27,7 +27,8 @@ public class GameController : MonoBehaviour
     public Rigidbody crabMob;
     public int jellyDensity = 50;
 
-	private Dictionary<string, int>score =  new Dictionary<string, int>();
+    //private Dictionary<string, int>score =  new Dictionary<string, int>();
+    private int score;
 
 	private float xMin = -5f;
 	private float xMax = 5f;
@@ -72,24 +73,20 @@ public class GameController : MonoBehaviour
 	private int newHazardCount;
 
 	void Update ()
-	{		
-        /*
-		if (newHazardCount != lastHazardCount)
-		{
-			Debug.Log ("No hazards changed to: " + newHazardCount);
-			lastHazardCount = newHazardCount;
-		}
+	{
+        if (Input.GetKey(KeyCode.Escape))
+        {
+#if UNITY_EDITOR
+            // Application.Quit() does not work in the editor so
+            // UnityEditor.EditorApplication.isPlaying need to be set to false to end the game
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
+        }
+    }
 
-		if(gameOver)
-		{
-			theEnd += Time.deltaTime;
-			if(theEnd>0.667f)
-				Time.timeScale = 0;
-		}
-        */      
-	}
-
-    IEnumerator SpawnJellies()
+        IEnumerator SpawnJellies()
     {
         //find spawn Jellies
         GameObject[] jelliesArr = GameObject.FindGameObjectsWithTag("Jelly");
@@ -274,16 +271,21 @@ public class GameController : MonoBehaviour
 	{
 		gameOver = false;
 		restart = false;
-		score["Player1"] = 0;
-		playerMoves["Player1"] = new List<PlayerMoveRecord>();
+		score = 0;
+		//playerMoves["Player1"] = new List<PlayerMoveRecord>();
 	}
 
-	public void AddScore(string playerId, int newScoreValue) 
+	public void AddScore(int newScoreValue) 
 	{
-		score[playerId] += newScoreValue;
+		score += newScoreValue;
 	}
 
-	public void GameOver()
+    public int GetScore()
+    {
+        return score;
+    }
+
+    public void GameOver()
 	{
 		gameOver = true;
 	}
@@ -459,25 +461,66 @@ public class GameController : MonoBehaviour
 
 	public void handleEnterCollision (GameObject trigger, Collider collided)  
 	{
-        
-        if (trigger.tag == "Projectile")
+        //Debug.Log(trigger.tag + " hit " + collided.tag);
+        switch (trigger.tag)
         {
-            Debug.Log(trigger.tag + " hit " + collided.tag);
-            trigger.GetComponent<MissileBehaviour>().Explode();
+            case "Projectile" :
+                if (collided.tag == "Player")
+                {
+                    var player = GameObject.Find("PlayerShip");
+                    if (player != null)
+                    {
+                        var playerBrain = player.GetComponent<PilotController>();
+                        playerBrain.TakeHit();
+                    }
+                    trigger.GetComponent<MissileBehaviour>().Explode();
+                }
+                else
+                {
+                    trigger.GetComponent<MissileBehaviour>().Die();
+                }
+                break;
+            case "PlayerProjectile" :
+                if (collided.tag == "Enemy")
+                {
+                    var enemyBrain = collided.gameObject.GetComponent<CrabBehaviour>();
+                    if (enemyBrain.isAlive())
+                    { 
+                        enemyBrain.TakeHit();
+                        trigger.GetComponent<MissileBehaviour>().Explode();
+                    }
+                }
+                else
+                {
+                    trigger.GetComponent<MissileBehaviour>().Die();
+                }
+                break;
+            case "Enemy":
+                Debug.Log(trigger.tag + " hit " + collided.tag);
+                break;
+            case "Player" :
+                if (collided.tag == "Jelly")
+                {
+                    Debug.Log(trigger.tag + " hit " + collided.tag);
+                    trigger.GetComponent<PilotController>().Stop();
+                }
+                //Debug.Log(trigger.tag + " hit " + collided.tag);
+                break;
         }
-		//if (trigger.tag == "<SomeProjectile>") 
-		//{
-		//	if (collided.tag == "Wall") 
-		//	{
-		//		//...
-		//	}
-		//	if (collided.tag == "Player") 
-		//	{
-		//		//...
-		//	}
-		//}
-		////...
-	}
+    
+        //if (trigger.tag == "<SomeProjectile>") 
+        //{
+        //	if (collided.tag == "Wall") 
+        //	{
+        //		//...
+        //	}
+        //	if (collided.tag == "Player") 
+        //	{
+        //		//...
+        //	}
+        //}
+        ////...
+    }
 
 	public void handleExitCollision (GameObject trigger, Collider collided)  
 	{
