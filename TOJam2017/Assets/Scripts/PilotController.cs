@@ -54,16 +54,11 @@ public class PilotController : MonoBehaviour
         ship = GetComponent<Rigidbody>();
         laserSound = GameObject.Find("Laser Sound").GetComponent<AudioSource>();
 
-        healthLevels[9].SetActive(false);
-        healthLevels[8].SetActive(false);
-        healthLevels[7].SetActive(false);
-        healthLevels[6].SetActive(false);
-        healthLevels[5].SetActive(false);
-        healthLevels[4].SetActive(false);
-        healthLevels[3].SetActive(false);
-        healthLevels[2].SetActive(false);
-        healthLevels[1].SetActive(false);
-        healthLevels[0].SetActive(false);
+        int i;
+        for(i=0;i<10;i++)
+        {
+            healthLevels[i].SetActive(false);
+        }
 
         CollisionDelegator delegator = gameObject.AddComponent<CollisionDelegator>() as CollisionDelegator;
         delegator.attach(GameController.Instance.handleEnterCollision, GameController.Instance.handleExitCollision);
@@ -89,18 +84,14 @@ public class PilotController : MonoBehaviour
             transform.rotation = transform.rotation = Quaternion.identity;
             invuln = false;
             dying = false;
-            healthLevels[10].SetActive(true);
-            healthLevels[9].SetActive(false);
-            healthLevels[8].SetActive(false);
-            healthLevels[7].SetActive(false);
-            healthLevels[6].SetActive(false);
-            healthLevels[5].SetActive(false);
-            healthLevels[4].SetActive(false);
-            healthLevels[3].SetActive(false);
-            healthLevels[2].SetActive(false);
-            healthLevels[1].SetActive(false);
-            healthLevels[0].SetActive(false);
+
             health = 100;
+            healthLevels[10].SetActive(true);
+            int i;
+            for (i = 0; i < 10; i++)
+            {
+                healthLevels[i].SetActive(false);
+            }
         }
 
         ship.angularDrag = (float)(2 + (2 * ship.velocity.magnitude / 11.2));

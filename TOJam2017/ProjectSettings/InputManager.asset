@@ -165,3 +165,19 @@ InputManager:
     type: 2
     axis: 8
     joyNum: 2
+  - serializedVersion: 3
+    m_Name: Start
+    descriptiveName: Start button
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 0
+    dead: 0.2
+    sensitivity: 1
+    snap: 1
+    invert: 0
+    type: 2
+    axis: 11
+    joyNum: 1

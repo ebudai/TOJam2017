@@ -23,12 +23,12 @@ public class SplashFade : MonoBehaviour {
             exit = true;
         }
 
-        if (Input.GetKeyDown("joystick button 0"))
+        if (Input.GetKeyDown("joystick button 7"))
         {
             getNames = true;
         }
 
-        if (Input.GetKey(KeyCode.Return))
+        if (Input.GetKey(KeyCode.Return) || Input.GetKeyDown("joystick button 7"))
         {
             //if (pilotInputField.text != "")
             //{

@@ -16,10 +16,10 @@ public class EndCredits : MonoBehaviour
 
     private bool exit = false;
     private bool gotoSplash = false;
-
+    private bool hiscoreShown = false;
     void Update()
     {
-        if (Input.GetKeyDown("joystick button 0"))
+        if (hiscoreShown && Input.GetKeyDown("joystick button 7"))
         {
             gotoSplash = true;
         }
@@ -120,5 +120,6 @@ public class EndCredits : MonoBehaviour
         creditsPanel.SetActive(false);
         yield return new WaitForSeconds(2.0f);
         hiScores.SetActive(true);
+        hiscoreShown = true;
     }
 }

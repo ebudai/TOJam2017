@@ -251,7 +251,6 @@ public class CrabBehaviour : MonoBehaviour
         } 
 
         myCommands.torque = headingCorrection;
-       // Debug.Log("Crab: turning - torque: [" +myCommands.torque.Value.magnitude+"]");
         myCommands.thrust = speed;
 
         var player = GameObject.Find("PlayerShip");
@@ -266,20 +265,8 @@ public class CrabBehaviour : MonoBehaviour
                 if (bounds.IntersectRay(lineToTarget))
                 {
                     myCommands.fire = true;
-                    myCommands.thrust = speed / 2.0f;
+                    myCommands.thrust = speed;
                 }
-                //var lineToTarget = new Ray(LeftHardPt.position, transform.forward);
-                //if (bounds.IntersectRay(lineToTarget))
-                //{
-                //    myCommands.fire = true;
-                //    myCommands.thrust = speed/2.0f;
-                //}
-                //lineToTarget = new Ray(RightHardPt.position, transform.forward);
-                //if (bounds.IntersectRay(lineToTarget))
-                //{
-                //    myCommands.fire = true;
-                //    myCommands.thrust = speed / 2.0f;
-                //}
             }
         }
     }
