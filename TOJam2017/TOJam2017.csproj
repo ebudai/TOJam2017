@@ -131,6 +131,7 @@
     <Compile Include="Assets\Scripts\CrabBehaviour.cs" />
     <Compile Include="Assets\Scripts\EndCredits.cs" />
     <Compile Include="Assets\Scripts\ExplosionAnimator.cs" />
+    <Compile Include="Assets\Scripts\ExplosionBehaviour.cs" />
     <Compile Include="Assets\Scripts\GameController.cs" />
     <Compile Include="Assets\Scripts\JellyBehaviour.cs" />
     <Compile Include="Assets\Scripts\MissileBehaviour.cs" />

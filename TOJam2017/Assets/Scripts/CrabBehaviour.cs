@@ -10,6 +10,7 @@ public class CrabBehaviour : MonoBehaviour
     public float fireRate;
 
     public GameObject shot;
+    public GameObject explosion;
     public Transform LeftHardPt;
     public Transform RightHardPt;
 
@@ -83,17 +84,17 @@ public class CrabBehaviour : MonoBehaviour
 
     public void Die()
     {
-        Rigidbody rigidBody = GetComponent<Rigidbody>();
-        rigidBody.AddTorque(new Vector3(0.0f,1.0f,0.0f));
-        rigidBody.velocity = Vector3.zero;
-        myState.alive = false;
-        //anim.StopPlayback();
-
         GameController.Instance.AddScore(scoreValue);
 
+        Rigidbody rigidBody = GetComponent<Rigidbody>();
+        //rigidBody.AddTorque(new Vector3(0.0f,1000.0f,500.0f));
+        //rigidBody.velocity = Vector3.zero;
+        //anim.StopPlayback();
         //death sound
-        deathSound.Play();
-        Destroy(gameObject, 1f);
+        //deathSound.Play();
+        Instantiate(explosion, transform.position + (transform.up*3), Quaternion.identity);
+        Destroy(gameObject);
+        myState.alive = false;
     }
 
     private readonly VectorPid angularVelocityController = new VectorPid(33.7766f, 0, 0.2553191f);
@@ -161,6 +162,10 @@ public class CrabBehaviour : MonoBehaviour
             }
             if (myCommands.torque != null)
             {
+                if (myCommands.torque.Value.magnitude > 25)
+                {
+                    myCommands.torque = myCommands.torque.Value.normalized * 25.0f;
+                }
                 rigidBody.AddTorque(myCommands.torque.Value);
             }
 
@@ -171,7 +176,7 @@ public class CrabBehaviour : MonoBehaviour
                 //need two shots here, one on right, one on left
                 //spawn them from the loc of hard pts
                 var player = GameObject.Find("PlayerShip");
-                anim["Take 001"].time = 0.50f;
+                //anim["Take 001"].time = 0.50f;
                 anim.Play();
                 GameObject leftShot = (GameObject)Instantiate(shot, LeftHardPt.position + transform.forward * 5, transform.rotation);
                 GameObject rightShot = (GameObject)Instantiate(shot, RightHardPt.position + transform.forward * 5, transform.rotation);
@@ -244,11 +249,6 @@ public class CrabBehaviour : MonoBehaviour
         myCommands.angularCorrection = angularVelocityCorrection;
         Vector3 headingError = Vector3.Cross(transform.forward, myState.desiredHeading);
         Vector3 headingCorrection = headingController.Update(headingError, 0.1f);
-
-        if (headingCorrection.magnitude > 25)
-        {
-            headingCorrection = headingCorrection.normalized * 25.0f;
-        } 
 
         myCommands.torque = headingCorrection;
         myCommands.thrust = speed;

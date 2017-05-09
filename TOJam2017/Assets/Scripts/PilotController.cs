@@ -17,7 +17,9 @@ public class PilotController : MonoBehaviour
     public GameObject[] healthLevels;
     private float MaxThrust { get; set; }
     private Rigidbody ship;
+
     public Camera playerCamera;
+
     public Camera radarTopCamera;
     public Camera radarFrontCamera;
 
@@ -31,6 +33,7 @@ public class PilotController : MonoBehaviour
     private AudioSource alarmSound;
     private AudioSource thrusterSound;
     private AudioSource hitSound;
+    private AudioSource deathSound;
 
     // Use this for initialization
     void Start()
@@ -49,6 +52,7 @@ public class PilotController : MonoBehaviour
         alarmSound = aSources[0];
         thrusterSound = aSources[1];
         hitSound = aSources[2];
+        deathSound = aSources[3];
 
         MaxThrust = 100;
         ship = GetComponent<Rigidbody>();
@@ -71,7 +75,7 @@ public class PilotController : MonoBehaviour
     {
         HandleRotation();
         HandleThrusting();
-        HandleRadar();
+        //HandleRadar();
         //HandleLaserSounds();
         // HandleGunnerAiming();
         int score = GameController.Instance.GetScore();
@@ -94,13 +98,15 @@ public class PilotController : MonoBehaviour
             }
         }
 
-        ship.angularDrag = (float)(2 + (2 * ship.velocity.magnitude / 11.2));
+        ship.angularDrag = (float)(2 + (3 * ship.velocity.magnitude / 11.2));
     }
 
     private void HandleRadar()
     {
-        radarTopCamera.transform.position = transform.position + new Vector3(0, 1100, 0);
-        radarFrontCamera.transform.position = transform.position + new Vector3(0, 0, 1100);
+        //radarTopCamera.transform.position = transform.position + new Vector3(0, 1100, 0);
+        //radarFrontCamera.transform.position = transform.position + new Vector3(0, 0, 1100);
+        //radarTopCamera.transform.position = transform.position + (transform.up * 1100.0f);
+       // radarFrontCamera.transform.position = transform.position + (transform.forward * -1100.0f);
         //radarTopCamera.transform.rotation.SetLookRotation(transform.position, new Vector3(0, transform.rotation.y, 0));
     }
 
@@ -122,7 +128,7 @@ public class PilotController : MonoBehaviour
 
     IEnumerator HandleShooting()
     {
-        while(true)
+        while (true)
         {
             if (Input.GetAxis("Fire") != 0)
             {
@@ -136,6 +142,7 @@ public class PilotController : MonoBehaviour
 
     private void HandleThrusting()
     {
+        if (dying) return;
         float thrustInput = Input.GetAxis("Thrust");
         if (thrustInput > 0)
         {
@@ -152,14 +159,19 @@ public class PilotController : MonoBehaviour
 
     private void HandleRotation()
     {
+        if (dying) return;
         var horizontalAmount = Input.GetAxis("Rotation");
         var verticalAmount = Input.GetAxis("Vertical");
         var rotationAmount = Input.GetAxis("Horizontal");
 
         ship.AddRelativeTorque(0, -horizontalAmount, 0);
         ship.AddRelativeTorque(-verticalAmount, 0, -rotationAmount);
-        radarTopCamera.transform.RotateAroundLocal(new Vector3(0, -1, 0), horizontalAmount / 180 * (float)Math.PI);
-        radarFrontCamera.transform.RotateAroundLocal(new Vector3(0, 0, 1), verticalAmount / 180 * (float)Math.PI);
+
+        //radarTopCamera.transform.RotateAroundLocal(new Vector3(0, -1, 0), horizontalAmount / 180 * (float)Math.PI);
+        //radarFrontCamera.transform.RotateAroundLocal(new Vector3(0, 0, 1), verticalAmount / 180 * (float)Math.PI);
+
+        //radarTopCamera.transform.Rotate(transform.up * -1.0f, horizontalAmount / 180 * (float)Math.PI);
+        //radarFrontCamera.transform.Rotate(transform.forward, verticalAmount / 180 * (float)Math.PI);
     }
 
     private T Clamp<T>(T value, T low, T high) where T : IComparable<T>
@@ -176,6 +188,7 @@ public class PilotController : MonoBehaviour
 
     public void TakeHit()
     {
+        if (dying) return;
         if (!hitSound.isPlaying)
         {
             hitSound.Play();
@@ -237,6 +250,7 @@ public class PilotController : MonoBehaviour
 
     void Die()
     {
+        deathSound.Play();
         dying = true;
         invuln = true;
         Stop();
@@ -244,6 +258,14 @@ public class PilotController : MonoBehaviour
 
         noticePanel.SetActive(true);
         int lives = GameController.Instance.GetLives();
-        noticeText.text = lives.ToString()+" LIVES LEFT";
+        
+        if (lives == 1)
+        {
+            noticeText.text = "LAST LIFE!!!";
+        }
+        else if (lives > 0)
+        {
+            noticeText.text = (lives + 1).ToString() + " LIVES LEFT";
+        }
     }
 }

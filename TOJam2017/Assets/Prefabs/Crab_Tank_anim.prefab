@@ -933,7 +933,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -993,6 +993,7 @@ MonoBehaviour:
   scoreValue: 100
   fireRate: 2
   shot: {fileID: 1319595185629206, guid: a54e98b37a859b1429e0f4d6819a1231, type: 2}
+  explosion: {fileID: 1973311231090786, guid: c74345bf83c875d48b65f9e691e93146, type: 2}
   LeftHardPt: {fileID: 4195225126145960}
   RightHardPt: {fileID: 4873446467789212}
   target: {fileID: 0}

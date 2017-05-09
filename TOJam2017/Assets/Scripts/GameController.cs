@@ -237,7 +237,7 @@ public class GameController : MonoBehaviour
                         }
                         //Debug.Log("spawnOffset: " + xOffset + "," + yOffset + "," + zOffset);
                         Vector3 spawnOffset = new Vector3(xOffset, yOffset, zOffset);
-                        Instantiate(crabMob, player.transform.position + spawnOffset, crabMob.transform.rotation);
+                        Instantiate(crabMob, player.transform.position + spawnOffset + (player.transform.forward * 35), crabMob.transform.rotation);
                     }
                     waveSpawned = true;
                 }
