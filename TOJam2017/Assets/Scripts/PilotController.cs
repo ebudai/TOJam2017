@@ -189,7 +189,7 @@ public class PilotController : MonoBehaviour
         {
             hitSound.Play();
         }
-        health -= 5;
+        health -= 3;
         if (health < 100 && health > 90)
         {
             healthLevels[8].SetActive(true);

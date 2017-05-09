@@ -1,6 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\TOJam2017",
+    "\\TOJam2017\\Assets",
+    "\\TOJam2017\\Assets\\Scripts"
   ],
+  "SelectedNode": "\\TOJam2017\\Assets\\Scripts\\CrabBehaviour.cs",
   "PreviewInSolutionExplorer": false
 }

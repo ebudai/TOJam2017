@@ -239,13 +239,20 @@ public class CrabBehaviour : MonoBehaviour
         Rigidbody rigidBody = GetComponent<Rigidbody>();
         Collider playerCollider = null;
 
-        var angularVelocityError = rigidBody.angularVelocity * -1;
-        var angularVelocityCorrection = angularVelocityController.Update(angularVelocityError, 0.1f);
+        Vector3 angularVelocityError = rigidBody.angularVelocity * -1;
+        Vector3 angularVelocityCorrection = angularVelocityController.Update(angularVelocityError, 0.1f);
         myCommands.angularCorrection = angularVelocityCorrection;
-        var headingError = Vector3.Cross(transform.forward, myState.desiredHeading);
-        var headingCorrection = headingController.Update(headingError, 0.1f);
+        Vector3 headingError = Vector3.Cross(transform.forward, myState.desiredHeading);
+        Vector3 headingCorrection = headingController.Update(headingError, 0.1f);
+
+        if (headingCorrection.magnitude > 25)
+        {
+            headingCorrection = headingCorrection.normalized * 25.0f;
+        } 
+
         myCommands.torque = headingCorrection;
-        myCommands.thrust = speed / 2.0f;
+       // Debug.Log("Crab: turning - torque: [" +myCommands.torque.Value.magnitude+"]");
+        myCommands.thrust = speed;
 
         var player = GameObject.Find("PlayerShip");
         if (player != null)
@@ -255,18 +262,24 @@ public class CrabBehaviour : MonoBehaviour
             {
                 var bounds = playerCollider.bounds;
                 //raycast on target
-                var lineToTarget = new Ray(LeftHardPt.position, transform.forward);
+                var lineToTarget = new Ray(transform.position, transform.forward);
                 if (bounds.IntersectRay(lineToTarget))
                 {
                     myCommands.fire = true;
-                    myCommands.thrust = speed;
+                    myCommands.thrust = speed / 2.0f;
                 }
-                lineToTarget = new Ray(RightHardPt.position, transform.forward);
-                if (bounds.IntersectRay(lineToTarget))
-                {
-                    myCommands.fire = true;
-                    myCommands.thrust = speed;
-                }
+                //var lineToTarget = new Ray(LeftHardPt.position, transform.forward);
+                //if (bounds.IntersectRay(lineToTarget))
+                //{
+                //    myCommands.fire = true;
+                //    myCommands.thrust = speed/2.0f;
+                //}
+                //lineToTarget = new Ray(RightHardPt.position, transform.forward);
+                //if (bounds.IntersectRay(lineToTarget))
+                //{
+                //    myCommands.fire = true;
+                //    myCommands.thrust = speed / 2.0f;
+                //}
             }
         }
     }

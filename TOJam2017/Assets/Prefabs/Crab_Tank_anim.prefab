@@ -96,12 +96,12 @@ GameObject:
   - component: {fileID: 4214467567648212}
   - component: {fileID: 95280916066578334}
   - component: {fileID: 54376434573126174}
-  - component: {fileID: 64396836954445760}
   - component: {fileID: 111380379559278168}
   - component: {fileID: 114287454520627404}
   - component: {fileID: 82960555094238608}
   - component: {fileID: 82633147463883474}
   - component: {fileID: 82661361259355322}
+  - component: {fileID: 136850461452676928}
   m_Layer: 0
   m_Name: Crab_Tank_anim
   m_TagString: Enemy
@@ -706,20 +706,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!64 &64396836954445760
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1170440854660298}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 1
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: c6f4ad3b3f907934ab82e6ecaf5fd351, type: 3}
 --- !u!82 &82633147463883474
 AudioSource:
   m_ObjectHideFlags: 1
@@ -1010,6 +996,19 @@ MonoBehaviour:
   LeftHardPt: {fileID: 4195225126145960}
   RightHardPt: {fileID: 4873446467789212}
   target: {fileID: 0}
+--- !u!136 &136850461452676928
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1170440854660298}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 1.43
+  m_Height: 3.82
+  m_Direction: 0
+  m_Center: {x: 0, y: 1.03, z: -0.48}
 --- !u!137 &137625840926106360
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
