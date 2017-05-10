@@ -34,6 +34,7 @@ public class PilotController : MonoBehaviour
     private AudioSource thrusterSound;
     private AudioSource hitSound;
     private AudioSource deathSound;
+    private AudioSource hitEnemySound;
 
     // Use this for initialization
     void Start()
@@ -53,6 +54,7 @@ public class PilotController : MonoBehaviour
         thrusterSound = aSources[1];
         hitSound = aSources[2];
         deathSound = aSources[3];
+        hitEnemySound = aSources[4];
 
         MaxThrust = 100;
         ship = GetComponent<Rigidbody>();
@@ -186,6 +188,11 @@ public class PilotController : MonoBehaviour
         GetComponent<Rigidbody>().velocity = new Vector3(0f, 0f, 0f);
     }
 
+    public void playHit()
+    {
+        hitEnemySound.Play();
+    }
+
     public void TakeHit()
     {
         if (dying) return;
@@ -265,7 +272,7 @@ public class PilotController : MonoBehaviour
         }
         else if (lives > 0)
         {
-            noticeText.text = (lives + 1).ToString() + " LIVES LEFT";
+            noticeText.text = lives.ToString() + " LIVES LEFT";
         }
     }
 }

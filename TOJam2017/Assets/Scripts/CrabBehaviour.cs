@@ -18,7 +18,6 @@ public class CrabBehaviour : MonoBehaviour
     //Animator anim;
     AudioSource fireSound;
     AudioSource flybySound;
-    AudioSource deathSound;
 
     private BotState myState = new BotState();
     private BotCommandStruct myCommands = new BotCommandStruct();
@@ -29,9 +28,13 @@ public class CrabBehaviour : MonoBehaviour
     private float nextFire = 0;
     private float health = 30;
     private bool sentComms = false;
+
+    private Animation anim;
+
     void Start()
     {
         Rigidbody rigidBody = GetComponent<Rigidbody>();
+        anim = GetComponent<Animation>();
 
         CollisionDelegator delegator = gameObject.AddComponent<CollisionDelegator>() as CollisionDelegator;
         delegator.attach(GameController.Instance.handleEnterCollision, GameController.Instance.handleExitCollision);
@@ -40,7 +43,6 @@ public class CrabBehaviour : MonoBehaviour
         var aSources = gameObject.GetComponents<AudioSource>();
         fireSound = aSources[0];
         flybySound = aSources[1];
-        deathSound = aSources[2];
 
         myState.playerSpotted = false;
         myState.alive = true;
@@ -76,7 +78,14 @@ public class CrabBehaviour : MonoBehaviour
     // Update is called once per frame for animation
     void Update()
     {
-
+        if (Time.time + 0.5 >= nextFire)
+        {
+            Debug.Log("Stopping animation");
+            anim["Take 001"].speed = -1;
+            anim["Take 001"].time = 0;
+           // anim.Rewind();
+           // anim.Stop();
+        }
     }
 
     public bool isAlive()
@@ -91,9 +100,6 @@ public class CrabBehaviour : MonoBehaviour
         Rigidbody rigidBody = GetComponent<Rigidbody>();
         //rigidBody.AddTorque(new Vector3(0.0f,1000.0f,500.0f));
         //rigidBody.velocity = Vector3.zero;
-        //anim.StopPlayback();
-        //death sound
-        //deathSound.Play();
         Instantiate(explosion, transform.position + (transform.up*3), Quaternion.identity);
         Destroy(gameObject);
         myState.alive = false;
@@ -136,15 +142,13 @@ public class CrabBehaviour : MonoBehaviour
     IEnumerator FollowPlayer()
     {
         yield return new WaitForSeconds(UnityEngine.Random.Range(1.5f, 3.0f));
-        var anim = GetComponent<Animation>();
         Rigidbody rigidBody = GetComponent<Rigidbody>();
         while (myState.alive)
         {
             //clear commands
             myCommands = new BotCommandStruct();
             myCommands.thrust = 0;
-            anim.Stop();
-
+            
             //Run behaviours
             foreach (KeyValuePair<int, SubsumptionRule> kvp in SubsumptionRules)
             {
@@ -173,12 +177,12 @@ public class CrabBehaviour : MonoBehaviour
 
             if (myCommands.fire && Time.time > nextFire)
             {
+                anim["Take 001"].time = 1.0f;
+                anim.Play();
                 //fire
                 fireSound.Play();
 
                 var player = GameObject.Find("PlayerShip");
-                //anim["Take 001"].time = 0.50f;
-                anim.Play();
 
                 //need two shots here, one on right, one on left
                 //spawn them from the loc of hard pts
@@ -302,7 +306,7 @@ public class CrabBehaviour : MonoBehaviour
         if (health <= 0)
         {
             Die();
-        } else if (health < 15 && !sentComms)
+        } else if (health < 20 && !sentComms)
         {
             sentComms = true;
             var cmdScript = GameObject.Find("Canvas/CrabFace").GetComponent<CrabFaceAnimation>();

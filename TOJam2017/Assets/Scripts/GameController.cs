@@ -260,7 +260,8 @@ public class GameController : MonoBehaviour
     public void LoseLife()
     {
         pLives -= 1;
-        if (pLives < 0)
+        Debug.Log("Lives: " +pLives);
+        if (pLives == 0)
         {
             GameOver();
         }
@@ -474,6 +475,14 @@ public class GameController : MonoBehaviour
             case "PlayerProjectile" :
                 if (collided.tag == "Enemy")
                 {
+
+                    var player = GameObject.Find("PlayerShip");
+                    if (player != null)
+                    {
+                        var playerBrain = player.GetComponent<PilotController>();
+                        playerBrain.playHit();
+                    }
+
                     var enemyBrain = collided.gameObject.GetComponent<CrabBehaviour>();
                     if (enemyBrain.isAlive())
                     { 
