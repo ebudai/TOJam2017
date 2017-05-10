@@ -1188,7 +1188,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b79300c97151824ab8656390c146b74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 150
+  speed: 165
   scoreValue: 100
   fireRate: 2
   shot: {fileID: 1319595185629206, guid: a54e98b37a859b1429e0f4d6819a1231, type: 2}

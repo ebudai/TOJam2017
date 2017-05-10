@@ -168,9 +168,9 @@ public class CrabBehaviour : MonoBehaviour
             }
             if (myCommands.torque != null)
             {
-                if (myCommands.torque.Value.magnitude > 25)
+                if (myCommands.torque.Value.magnitude > 30)
                 {
-                    myCommands.torque = myCommands.torque.Value.normalized * 25.0f;
+                    myCommands.torque = myCommands.torque.Value.normalized * 30.0f;
                 }
                 rigidBody.AddTorque(myCommands.torque.Value);
             }

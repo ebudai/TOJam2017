@@ -75,10 +75,7 @@ public class PilotController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        HandleRotation();
-        HandleThrusting();
-        //HandleRadar();
-        //HandleLaserSounds();
+        // HandleLaserSounds();
         // HandleGunnerAiming();
         int score = GameController.Instance.GetScore();
         scorePanel.text = score.ToString();
@@ -99,17 +96,14 @@ public class PilotController : MonoBehaviour
                 healthLevels[i].SetActive(false);
             }
         }
-
-        ship.angularDrag = (float)(2 + (3 * ship.velocity.magnitude / 11.2));
     }
 
-    private void HandleRadar()
+   void FixedUpdate()
     {
-        //radarTopCamera.transform.position = transform.position + new Vector3(0, 1100, 0);
-        //radarFrontCamera.transform.position = transform.position + new Vector3(0, 0, 1100);
-        //radarTopCamera.transform.position = transform.position + (transform.up * 1100.0f);
-       // radarFrontCamera.transform.position = transform.position + (transform.forward * -1100.0f);
-        //radarTopCamera.transform.rotation.SetLookRotation(transform.position, new Vector3(0, transform.rotation.y, 0));
+        //physics updates go in FixedUpdate
+        HandleRotation();
+        HandleThrusting();
+        ship.angularDrag = (float)(2 + (3 * ship.velocity.magnitude / 11.2));
     }
 
     //private void HandleGunnerAiming()
@@ -168,12 +162,6 @@ public class PilotController : MonoBehaviour
 
         ship.AddRelativeTorque(0, -horizontalAmount, 0);
         ship.AddRelativeTorque(-verticalAmount, 0, -rotationAmount);
-
-        //radarTopCamera.transform.RotateAroundLocal(new Vector3(0, -1, 0), horizontalAmount / 180 * (float)Math.PI);
-        //radarFrontCamera.transform.RotateAroundLocal(new Vector3(0, 0, 1), verticalAmount / 180 * (float)Math.PI);
-
-        //radarTopCamera.transform.Rotate(transform.up * -1.0f, horizontalAmount / 180 * (float)Math.PI);
-        //radarFrontCamera.transform.Rotate(transform.forward, verticalAmount / 180 * (float)Math.PI);
     }
 
     private T Clamp<T>(T value, T low, T high) where T : IComparable<T>
@@ -201,49 +189,58 @@ public class PilotController : MonoBehaviour
             hitSound.Play();
         }
         health -= 3;
-        if (health < 100 && health > 90)
+        if (health <= 90 && health > 80)
         {
             healthLevels[8].SetActive(true);
             healthLevels[9].SetActive(false);
-        }
-        else if (health <= 90 && health > 80)
-        {
-            healthLevels[7].SetActive(true);
-            healthLevels[8].SetActive(false);
+
         }
         else if (health <= 80 && health > 70)
         {
-            healthLevels[6].SetActive(true);
-            healthLevels[7].SetActive(false);
+            healthLevels[7].SetActive(true);
+            healthLevels[8].SetActive(false);
+
         }
         else if (health <= 70 && health > 60)
         {
-            healthLevels[5].SetActive(true);
-            healthLevels[6].SetActive(false);
+            healthLevels[6].SetActive(true);
+            healthLevels[7].SetActive(false);
+
         }
         else if (health <= 60 && health > 50)
         {
-            healthLevels[4].SetActive(true);
-            healthLevels[5].SetActive(false);
+            healthLevels[5].SetActive(true);
+            healthLevels[6].SetActive(false);
+
         }
         else if (health <= 50 && health > 40)
         {
-            healthLevels[3].SetActive(true);
-            healthLevels[4].SetActive(false);
+            healthLevels[4].SetActive(true);
+            healthLevels[5].SetActive(false);
+
         }
         else if (health <= 40 && health > 30)
         {
-            alarmSound.Play();
-            healthLevels[2].SetActive(true);
-            healthLevels[3].SetActive(false);
+
+            healthLevels[3].SetActive(true);
+            healthLevels[4].SetActive(false);
+
         }
         else if (health <= 30 && health > 20)
         {
             alarmSound.Play();
-            healthLevels[1].SetActive(true);
-            healthLevels[2].SetActive(false);
+            healthLevels[2].SetActive(true);
+            healthLevels[3].SetActive(false);
+
         }
         else if (health <= 20 && health > 10)
+        {
+            alarmSound.Play();
+            healthLevels[1].SetActive(true);
+            healthLevels[2].SetActive(false);
+
+        }
+        else if (health < 10)
         {
             alarmSound.Play();
             healthLevels[0].SetActive(true);
