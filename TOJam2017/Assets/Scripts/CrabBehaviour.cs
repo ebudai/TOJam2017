@@ -11,6 +11,7 @@ public class CrabBehaviour : MonoBehaviour
 
     public GameObject shot;
     public GameObject explosion;
+
     public Transform LeftHardPt;
     public Transform RightHardPt;
 
@@ -27,6 +28,7 @@ public class CrabBehaviour : MonoBehaviour
 
     private float nextFire = 0;
     private float health = 30;
+    private bool sentComms = false;
     void Start()
     {
         Rigidbody rigidBody = GetComponent<Rigidbody>();
@@ -173,11 +175,13 @@ public class CrabBehaviour : MonoBehaviour
             {
                 //fire
                 fireSound.Play();
-                //need two shots here, one on right, one on left
-                //spawn them from the loc of hard pts
+
                 var player = GameObject.Find("PlayerShip");
                 //anim["Take 001"].time = 0.50f;
                 anim.Play();
+
+                //need two shots here, one on right, one on left
+                //spawn them from the loc of hard pts
                 GameObject leftShot = (GameObject)Instantiate(shot, LeftHardPt.position + transform.forward * 5, transform.rotation);
                 GameObject rightShot = (GameObject)Instantiate(shot, RightHardPt.position + transform.forward * 5, transform.rotation);
 
@@ -298,6 +302,12 @@ public class CrabBehaviour : MonoBehaviour
         if (health <= 0)
         {
             Die();
+        } else if (health < 15 && !sentComms)
+        {
+            sentComms = true;
+            var cmdScript = GameObject.Find("Canvas/CrabFace").GetComponent<CrabFaceAnimation>();
+            //var cmdScript = GameObject.Find("Canvas/EelFace").GetComponent<EelFaceAnim>();
+            cmdScript.Play();
         }
     }
 }
