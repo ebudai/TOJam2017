@@ -44,7 +44,7 @@ public class PilotController : MonoBehaviour
         //=========
         RenderSettings.fog = true;
         RenderSettings.fogColor = new Color(0.0f, 0.4f, 0.7f, 0.6f);
-        RenderSettings.fogDensity = 0.04f;
+        RenderSettings.fogDensity = 0.03f;
         RenderSettings.skybox = null;
         //END FOG
 

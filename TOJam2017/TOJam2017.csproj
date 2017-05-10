@@ -134,6 +134,7 @@
     <Compile Include="Assets\Scripts\ExplosionBehaviour.cs" />
     <Compile Include="Assets\Scripts\GameController.cs" />
     <Compile Include="Assets\Scripts\JellyBehaviour.cs" />
+    <Compile Include="Assets\Scripts\LightBehaviour.cs" />
     <Compile Include="Assets\Scripts\MissileBehaviour.cs" />
     <Compile Include="Assets\Scripts\PilotController.cs" />
     <Compile Include="Assets\Scripts\PlayerInfo.cs" />
