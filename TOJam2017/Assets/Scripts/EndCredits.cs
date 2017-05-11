@@ -21,7 +21,7 @@ public class EndCredits : MonoBehaviour
 
     void Update()
     {
-        if (hiscoreShown && (Input.GetKeyDown("joystick button 7")|| Input.GetKey(KeyCode.Return)))
+        if (hiscoreShown && (Input.GetKeyDown("joystick button 7") || Input.GetKey(KeyCode.Return)))
         {
             if (!startSound.isPlaying)
             {
