@@ -1,6 +1,6 @@
 HIGH SCORES
 joe 3800
+JOE 2600
 aaa 1200
 bbb 900
-jhg 500
-ccc 300
+JOE 900

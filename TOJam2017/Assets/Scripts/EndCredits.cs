@@ -17,10 +17,17 @@ public class EndCredits : MonoBehaviour
     private bool exit = false;
     private bool gotoSplash = false;
     private bool hiscoreShown = false;
+    private AudioSource startSound;
+
     void Update()
     {
-        if (hiscoreShown && Input.GetKeyDown("joystick button 7"))
+        if (hiscoreShown && (Input.GetKeyDown("joystick button 7")|| Input.GetKey(KeyCode.Return)))
         {
+            if (!startSound.isPlaying)
+            {
+                startSound.Play();
+            }
+
             gotoSplash = true;
         }
         if (Input.GetKey(KeyCode.Escape))
@@ -31,9 +38,10 @@ public class EndCredits : MonoBehaviour
 
     void Start()
     {
+        startSound = GetComponent<AudioSource>();
         string hiscoreText = System.IO.File.ReadAllText("hiscore.txt");
         string[] lines = hiscoreText.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
-        Dictionary<string, int> scoreTable = new Dictionary<string, int>();
+        List<KeyValuePair<string, int>> scoreTable = new List<KeyValuePair<string, int>>();
         int i;
 
         for (i=0;i<lines.Length; i++)
@@ -41,12 +49,11 @@ public class EndCredits : MonoBehaviour
             string thisLine = lines[i];
             if (thisLine == "HIGH SCORES") continue;
             string[] vals = thisLine.Split(' ');
-            //string[] lines = hiscoreText.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
-            scoreTable[vals[0]] = Int32.Parse(vals[1]);
+            scoreTable.Add(new KeyValuePair<string, int>(vals[0], Int32.Parse(vals[1])));
         }
         GameObject persistentGameObject = GameObject.Find("PlayerInfoStore");
         var persistentScript = persistentGameObject.GetComponent<PlayerInfo>();
-        scoreTable[persistentScript.playerName] = persistentScript.score;
+        scoreTable.Add(new KeyValuePair<string, int>(persistentScript.playerName, persistentScript.score));
 
         string newHiScores = "HIGH SCORES";
         var ordered = scoreTable.OrderByDescending(x => x.Value).Take(5);
@@ -110,15 +117,15 @@ public class EndCredits : MonoBehaviour
     IEnumerator LoadCredits()
     {
         FadeInEnd();
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(2.5f);
         FadeOutEnd();
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(1.0f);
         //FadeInCredits();
         creditsPanel.SetActive(true);
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(3.0f);
         //FadeOutCredits();
         creditsPanel.SetActive(false);
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(1.0f);
         hiScores.SetActive(true);
         hiscoreShown = true;
     }

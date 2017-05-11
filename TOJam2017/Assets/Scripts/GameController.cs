@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
@@ -43,8 +44,9 @@ public class GameController : MonoBehaviour
 	private GameObject[] spawns;
 
     private List<Rigidbody> jellies = new List<Rigidbody>();
+    private float waveStartTime;
     private int waveSize = 3;
-    private int level = 0;
+    private int level = 1;
     private int score = 0;
     private int pLives = 3;
     //float theEnd = 0;
@@ -65,11 +67,12 @@ public class GameController : MonoBehaviour
 
 	void Start () 
 	{
-        level = 0;
+        level = 1;
         score = 0;
         pLives = 3;
         StartCoroutine(SpawnJellies());
         StartCoroutine(SpawnWaves());
+        StartCoroutine(WaveNotice());
     }
 
 	private int lastHazardCount = 0;
@@ -190,8 +193,24 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private bool waveSpawned = false;
+    IEnumerator WaveNotice()
+    {
+        var waveNotice = GameObject.Find("Canvas/WaveNotice").GetComponent<Text>();
+        while (true)
+        {
+            if (Time.time - 1.3f < waveStartTime)
+            {
+                waveNotice.text = "WAVE " + level.ToString();
+            }
+            else
+            {
+                waveNotice.text = "";
+            }
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
 
+    private bool waveSpawned = false;
     IEnumerator SpawnWaves()
     {
         var player = GameObject.Find("PlayerShip");
@@ -202,7 +221,8 @@ public class GameController : MonoBehaviour
             {
                 if (!waveSpawned)
                 {
-                    //no jellies, create!
+                    waveStartTime = Time.time;
+                    //no crabs, create!
                     int i = 0;
                     for (i = 0; i < waveSize; i++)
                     {
@@ -246,9 +266,10 @@ public class GameController : MonoBehaviour
                     //go to next wave
                     waveSpawned = false;
                     waveSize += 3;
+                    level += 1;
                 }
             }
-            yield return new WaitForSeconds(10.0f);
+            yield return new WaitForSeconds(6.0f);
         }
     }
 

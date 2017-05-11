@@ -16,6 +16,9 @@ public class SplashFade : MonoBehaviour {
     private bool loadMain = false;
     private bool exit = false;
 
+    private AudioSource startSound;
+    private AudioSource[] aSources;
+
     void Update()
     {
         if (Input.GetKey(KeyCode.Escape))
@@ -23,9 +26,21 @@ public class SplashFade : MonoBehaviour {
             exit = true;
         }
 
-        if (Input.GetKeyDown("joystick button 7"))
+        if (Input.GetKeyDown("joystick button 7") || Input.GetKey(KeyCode.Return))
         {
+            startSound.Play();
             getNames = true;
+        }
+
+        if (Input.anyKey)
+        {
+            //roll a die?
+            float prob = UnityEngine.Random.Range(0.0f, 3.0f);
+            int dieRoll = (int)Math.Round(prob);
+            if (!aSources[dieRoll].isPlaying)
+            {
+                aSources[dieRoll].Play();
+            }
         }
 
         if (Input.GetKey(KeyCode.Return) || Input.GetKeyDown("joystick button 7"))
@@ -68,11 +83,14 @@ public class SplashFade : MonoBehaviour {
 
     void Start()
     {
+        aSources = gameObject.GetComponents<AudioSource>();
+        startSound = aSources[4];
+
         string text = System.IO.File.ReadAllText("hiscore.txt");
         Debug.Log(text);
 
         //gunnerInputField.enabled = false;
-        //pilotInputField.onValueChanged.AddListener(delegate { PilotNameChange(); });
+        pilotInputField.onValueChanged.AddListener(delegate { PilotNameChange(); });
         //gunnerInputField.onValueChanged.AddListener(delegate { GunnerNameChange(); });
 
         uiPanel.SetActive(false);
@@ -126,18 +144,19 @@ public class SplashFade : MonoBehaviour {
         splashImage.CrossFadeAlpha(0.0f, 1.5f, false);
     }
 
-    //// Invoked when the value of the text field changes.
-    //public void PilotNameChange()
-    //{
-    //    var upperText = pilotInputField.text.ToUpper();
-    //    if (upperText != pilotInputField.text) pilotInputField.text = upperText;
-    //    if (pilotInputField.text.Length == 3)
-    //    {
-    //        pilotInputField.enabled = false;
-    //        gunnerInputField.enabled = true;
-    //        gunnerInputField.Select();
-    //    }
-    //}
+    // Invoked when the value of the text field changes.
+    public void PilotNameChange()
+    {
+        var upperText = pilotInputField.text.ToUpper();
+        if (upperText != pilotInputField.text) pilotInputField.text = upperText;
+        //if (pilotInputField.text.Length == 3)
+        //{
+        //    pilotInputField.enabled = false;
+        //    gunnerInputField.enabled = true;
+        //    gunnerInputField.Select();
+        //}
+    }
+
     //public void GunnerNameChange()
     //{
     //    var upperText = gunnerInputField.text.ToUpper();

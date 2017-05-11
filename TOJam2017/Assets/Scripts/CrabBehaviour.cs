@@ -80,7 +80,7 @@ public class CrabBehaviour : MonoBehaviour
     {
         if (Time.time + 0.5 >= nextFire)
         {
-            Debug.Log("Stopping animation");
+            //Debug.Log("Stopping animation");
             anim["Take 001"].speed = -1;
             anim["Take 001"].time = 0;
            // anim.Rewind();

@@ -11,6 +11,7 @@ public class PilotController : MonoBehaviour
     public Text scorePanel;
     public GameObject noticePanel;
     public Text noticeText;
+    public Image screenFlash;
 
     public bool invuln = false;
     public bool dying = false;
@@ -70,6 +71,7 @@ public class PilotController : MonoBehaviour
         delegator.attach(GameController.Instance.handleEnterCollision, GameController.Instance.handleExitCollision);
 
         StartCoroutine(HandleShooting());
+        screenFlash.CrossFadeAlpha(0.0f, 0.0f, false);
     }
 
     // Update is called once per frame
@@ -79,7 +81,8 @@ public class PilotController : MonoBehaviour
         // HandleGunnerAiming();
         int score = GameController.Instance.GetScore();
         scorePanel.text = score.ToString();
-        if (dying && Input.anyKeyDown)
+        if (dying && Input.GetAxis("Fire") != 0)
+        // if (dying && Input.anyKeyDown)
         {
             noticeText.text = "";
             noticePanel.SetActive(false);
@@ -126,7 +129,7 @@ public class PilotController : MonoBehaviour
     {
         while (true)
         {
-            if (Input.GetAxis("Fire") != 0)
+            if (Input.GetAxis("Fire") != 0 || Input.GetKeyDown("joystick button 0"))
             {
                 laserSound.Play();
                 GameObject newShot = Instantiate(shot, transform.position + (transform.forward * 5.0f), transform.rotation);
@@ -140,6 +143,13 @@ public class PilotController : MonoBehaviour
     {
         if (dying) return;
         float thrustInput = Input.GetAxis("Thrust");
+        if (thrustInput <= 0)
+        {
+            if (Input.GetKeyDown("joystick button 1"))
+            {
+                thrustInput = 1.0f;
+            }
+        }
         if (thrustInput > 0)
         {
             if (!thrusterSound.isPlaying || thrusterSound.time > 2.0)
@@ -181,9 +191,20 @@ public class PilotController : MonoBehaviour
         hitEnemySound.Play();
     }
 
+    IEnumerator ScreenFlash()
+    {
+        Debug.Log("ScreenFlash");
+        screenFlash.CrossFadeAlpha(0.5f, 0.0f, false);
+        screenFlash.CrossFadeAlpha(0.0f, 0.2f, false);
+        yield return new WaitForSeconds(0.0f);
+    }
+
     public void TakeHit()
     {
         if (dying) return;
+
+        StartCoroutine(ScreenFlash());
+
         if (!hitSound.isPlaying)
         {
             hitSound.Play();
