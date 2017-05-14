@@ -20,9 +20,7 @@ public class PilotController : MonoBehaviour
     private Rigidbody ship;
 
     public Camera playerCamera;
-
-    public Camera radarTopCamera;
-    public Camera radarFrontCamera;
+    public Camera rearView;
 
     private ParticleSystem cannon;
     private ParticleSystem gunnerCannon;
@@ -43,6 +41,7 @@ public class PilotController : MonoBehaviour
         //FOG
         //Set the background color
         playerCamera.backgroundColor = new Color(0.0f, 0.4f, 0.7f, 1f);
+        rearView.backgroundColor = new Color(0.0f, 0.4f, 0.7f, 1f);
         //=========
         RenderSettings.fog = true;
         RenderSettings.fogColor = new Color(0.0f, 0.4f, 0.7f, 0.6f);

@@ -21,7 +21,7 @@ public class BotCommandStruct
 	public Vector3 firingAngle;	
 	public Vector3 velocity;
     public Vector3? torque;
-    public float thrust;
+    public float thrust = 0.0f;
 	public Quaternion rotation;
     public Vector3? angularCorrection;
 }

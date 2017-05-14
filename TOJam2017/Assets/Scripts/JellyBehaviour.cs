@@ -48,7 +48,7 @@ public class JellyBehaviour : MonoBehaviour
             float dieRoll = Random.Range(0f, 6.0f);
             if (dieRoll > 4)
             {
-                rigidBody.AddForce(transform.forward * 40 * bobDir);
+                rigidBody.AddForce(transform.forward * 400 * bobDir);
                 bobDir *= -1.0f;
             }
 

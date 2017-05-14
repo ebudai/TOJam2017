@@ -28,6 +28,7 @@ public class GameController : MonoBehaviour
 
     public Rigidbody jellyMob;
     public Rigidbody crabMob;
+    public Rigidbody eelMob;
     public int jellyDensity = 100;
 
 	private float xMin = -5f;
@@ -45,7 +46,8 @@ public class GameController : MonoBehaviour
 
     private List<Rigidbody> jellies = new List<Rigidbody>();
     private float waveStartTime;
-    private int waveSize = 3;
+    private int numCrabs = 3;
+    private int numEels = 2;
     private int level = 1;
     private int score = 0;
     private int pLives = 3;
@@ -216,15 +218,15 @@ public class GameController : MonoBehaviour
         var player = GameObject.Find("PlayerShip");
         while (true)
         {
-            GameObject[] crabs = GameObject.FindGameObjectsWithTag("Enemy");
-            if (crabs.Length == 0) 
+            GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+            if (enemies.Length == 0) 
             {
                 if (!waveSpawned)
                 {
                     waveStartTime = Time.time;
                     //no crabs, create!
-                    int i = 0;
-                    for (i = 0; i < waveSize; i++)
+                    int i;
+                    for (i = 0; i < numCrabs; i++)
                     {
                         //Debug.Log("Spawning crab: " + i);
                         float xOffset = Random.Range(-60f, 60.0f);
@@ -255,9 +257,42 @@ public class GameController : MonoBehaviour
                         {
                             zOffset += 10;
                         }
-                        //Debug.Log("spawnOffset: " + xOffset + "," + yOffset + "," + zOffset);
                         Vector3 spawnOffset = new Vector3(xOffset, yOffset, zOffset);
                         Instantiate(crabMob, player.transform.position + spawnOffset + (player.transform.forward * 35), crabMob.transform.rotation);
+                    }
+                    for (i = 0; i < numEels; i++)
+                    {
+                        //Debug.Log("Spawning crab: " + i);
+                        float xOffset = Random.Range(-60f, 60.0f);
+                        float yOffset = Random.Range(-60f, 60.0f);
+                        float zOffset = Random.Range(-60f, 60.0f);
+
+                        if (xOffset < 0 && xOffset > -10)
+                        {
+                            xOffset -= 10;
+                        }
+                        if (xOffset > 0 && xOffset < -10)
+                        {
+                            xOffset += 10;
+                        }
+                        if (yOffset < 0 && yOffset > -10)
+                        {
+                            yOffset -= 10;
+                        }
+                        if (yOffset > 0 && yOffset < -10)
+                        {
+                            yOffset += 10;
+                        }
+                        if (zOffset < 0 && zOffset > -10)
+                        {
+                            zOffset -= 10;
+                        }
+                        if (zOffset > 0 && zOffset < -10)
+                        {
+                            zOffset += 10;
+                        }
+                        Vector3 spawnOffset = new Vector3(xOffset, yOffset, zOffset);
+                        Instantiate(eelMob, player.transform.position + spawnOffset + (player.transform.forward * 35), eelMob.transform.rotation);
                     }
                     waveSpawned = true;
                 }
@@ -265,7 +300,8 @@ public class GameController : MonoBehaviour
                 {
                     //go to next wave
                     waveSpawned = false;
-                    waveSize += 3;
+                    numCrabs += 3;
+                    numEels += 2;
                     level += 1;
                 }
             }
@@ -480,12 +516,8 @@ public class GameController : MonoBehaviour
             case "Projectile" :
                 if (collided.tag == "Player")
                 {
-                    var player = GameObject.Find("PlayerShip");
-                    if (player != null)
-                    {
-                        var playerBrain = player.GetComponent<PilotController>();
-                        playerBrain.TakeHit();
-                    }
+                    var playerBrain = collided.GetComponent<PilotController>();
+                    playerBrain.TakeHit();
                     trigger.GetComponent<MissileBehaviour>().Explode();
                 }
                 else
@@ -505,7 +537,13 @@ public class GameController : MonoBehaviour
                     }
 
                     var enemyBrain = collided.gameObject.GetComponent<CrabBehaviour>();
-                    if (enemyBrain.isAlive())
+                    var eelBrain = collided.gameObject.GetComponent<EelBehaviour>();
+                    if (eelBrain != null && eelBrain.isAlive())
+                    {
+                        eelBrain.TakeHit();
+                        trigger.GetComponent<MissileBehaviour>().Explode();
+                    }
+                    if (enemyBrain != null && enemyBrain.isAlive())
                     { 
                         enemyBrain.TakeHit();
                         trigger.GetComponent<MissileBehaviour>().Explode();
@@ -517,13 +555,25 @@ public class GameController : MonoBehaviour
                 }
                 break;
             case "Enemy":
-                //Debug.Log(trigger.tag + " hit " + collided.tag);
+                if (collided.tag == "Player")
+                {
+                    //Debug.Log(trigger.tag + " hit " + collided.tag);
+                    //is it an eel?
+                    var eelBrain = trigger.GetComponent<EelBehaviour>();
+                    if (eelBrain != null)
+                    {
+                        //play collision sound
+                        eelBrain.DoBite();
+                        var playerBrain = collided.GetComponent<PilotController>();
+                        playerBrain.TakeHit();
+                    }
+                }
                 break;
             case "Player" :
                 if (collided.tag == "Jelly")
                 {
                     //Debug.Log(trigger.tag + " hit " + collided.tag);
-                    trigger.GetComponent<PilotController>().Stop();
+                    //trigger.GetComponent<PilotController>().Stop();
                 }
                 //Debug.Log(trigger.tag + " hit " + collided.tag);
                 break;
@@ -549,4 +599,29 @@ public class PlayerMoveRecord
 		position = currPosition;
 		velocity = currVelocity;
 	}
+}
+
+public class VectorPid
+{
+    public float pFactor, iFactor, dFactor;
+
+    private Vector3 integral;
+    private Vector3 lastError;
+
+    public VectorPid(float pFactor, float iFactor, float dFactor)
+    {
+        this.pFactor = pFactor;
+        this.iFactor = iFactor;
+        this.dFactor = dFactor;
+    }
+
+    public Vector3 Update(Vector3 currentError, float timeFrame)
+    {
+        integral += currentError * timeFrame;
+        var deriv = (currentError - lastError) / timeFrame;
+        lastError = currentError;
+        return currentError * pFactor
+            + integral * iFactor
+            + deriv * dFactor;
+    }
 }

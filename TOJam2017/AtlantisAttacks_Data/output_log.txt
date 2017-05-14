@@ -23,64 +23,28 @@ Platform assembly: F:\Accounts\joe\src\TOJam2017\TOJam2017\AtlantisAttacks_Data\
 <RI> Input initialized.
 desktop: 1920x1080 60Hz; virtual: 3840x1080 at 0,0
 <RI> Initialized touch support.
-UnloadTime: 0.837810 ms
+UnloadTime: 0.832535 ms
 HIGH SCORES
-joe 3800
-JOE 2600
-JRL 1800
-HGF 1500
-aaa 1200
+AAA 1800
+BBB 1500
+TFG 1350
+CCC 1200
+DDD 900
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
 Setting up 6 worker threads for Enlighten.
-  Thread -> id: 2ba8 -> priority: 1 
-  Thread -> id: 2ea8 -> priority: 1 
-  Thread -> id: 2e68 -> priority: 1 
-  Thread -> id: 252c -> priority: 1 
-  Thread -> id: 2864 -> priority: 1 
-  Thread -> id: 2a6c -> priority: 1 
+  Thread -> id: 2a5c -> priority: 1 
+  Thread -> id: 2c68 -> priority: 1 
+  Thread -> id: 193c -> priority: 1 
+  Thread -> id: 2724 -> priority: 1 
+  Thread -> id: 2160 -> priority: 1 
+  Thread -> id: 28bc -> priority: 1 
 Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 1.573222 ms
+UnloadTime: 1.533814 ms
 
-Unloading 12 unused Assets to reduce memory usage. Loaded Objects now: 643.
-Total: 0.262514 ms (FindLiveObjects: 0.019548 ms CreateObjectMapping: 0.020790 ms MarkObjects: 0.179974 ms  DeleteObjects: 0.041890 ms)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Can not play a disabled audio source
- 
-(Filename:  Line: 536)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Can not play a disabled audio source
- 
-(Filename:  Line: 536)
+Unloading 12 unused Assets to reduce memory usage. Loaded Objects now: 663.
+Total: 0.264065 ms (FindLiveObjects: 0.019859 ms CreateObjectMapping: 0.021721 ms MarkObjects: 0.179974 ms  DeleteObjects: 0.042511 ms)
 
 ScreenFlash
  
@@ -138,17 +102,9 @@ ScreenFlash
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
-Can not play a disabled audio source
- 
-(Filename:  Line: 536)
-
 ScreenFlash
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Can not play a disabled audio source
- 
-(Filename:  Line: 536)
 
 ScreenFlash
  
@@ -170,33 +126,45 @@ ScreenFlash
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
-Can not play a disabled audio source
+ScreenFlash
  
-(Filename:  Line: 536)
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
 ScreenFlash
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
-Can not play a disabled audio source
+ScreenFlash
  
-(Filename:  Line: 536)
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
 ScreenFlash
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
-Can not play a disabled audio source
+ScreenFlash
  
-(Filename:  Line: 536)
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
 ScreenFlash
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
-Can not play a disabled audio source
+ScreenFlash
  
-(Filename:  Line: 536)
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+ScreenFlash
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+ScreenFlash
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+ScreenFlash
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
 ScreenFlash
  
@@ -222,33 +190,17 @@ ScreenFlash
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
-Can not play a disabled audio source
- 
-(Filename:  Line: 536)
-
 ScreenFlash
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
-Can not play a disabled audio source
- 
-(Filename:  Line: 536)
-
 ScreenFlash
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Can not play a disabled audio source
- 
-(Filename:  Line: 536)
 
 ScreenFlash
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Can not play a disabled audio source
- 
-(Filename:  Line: 536)
 
 ScreenFlash
  
@@ -261,19 +213,11 @@ ScreenFlash
 ScreenFlash
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Can not play a disabled audio source
- 
-(Filename:  Line: 536)
 
 ScreenFlash
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
-Can not play a disabled audio source
- 
-(Filename:  Line: 536)
-
 ScreenFlash
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
@@ -286,10 +230,6 @@ ScreenFlash
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
-Can not play a disabled audio source
- 
-(Filename:  Line: 536)
-
 ScreenFlash
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
@@ -301,18 +241,10 @@ ScreenFlash
 ScreenFlash
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Can not play a disabled audio source
- 
-(Filename:  Line: 536)
 
 ScreenFlash
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Can not play a disabled audio source
- 
-(Filename:  Line: 536)
 
 ScreenFlash
  
@@ -378,191 +310,19 @@ ScreenFlash
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
-Can not play a disabled audio source
- 
-(Filename:  Line: 536)
-
 ScreenFlash
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Can not play a disabled audio source
- 
-(Filename:  Line: 536)
 
 ScreenFlash
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Can not play a disabled audio source
- 
-(Filename:  Line: 536)
 
 ScreenFlash
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
 Lives: 1
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Can not play a disabled audio source
- 
-(Filename:  Line: 536)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Can not play a disabled audio source
- 
-(Filename:  Line: 536)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Can not play a disabled audio source
- 
-(Filename:  Line: 536)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Can not play a disabled audio source
- 
-(Filename:  Line: 536)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Can not play a disabled audio source
- 
-(Filename:  Line: 536)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Can not play a disabled audio source
- 
-(Filename:  Line: 536)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Can not play a disabled audio source
- 
-(Filename:  Line: 536)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Can not play a disabled audio source
- 
-(Filename:  Line: 536)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Can not play a disabled audio source
- 
-(Filename:  Line: 536)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Can not play a disabled audio source
- 
-(Filename:  Line: 536)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-ScreenFlash
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
@@ -579,31 +339,6 @@ ScreenFlash
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
 ScreenFlash
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Lives: 0
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 2.655549 ms
-
-Unloading 86 unused Assets to reduce memory usage. Loaded Objects now: 488.
-Total: 0.861083 ms (FindLiveObjects: 0.015515 ms CreateObjectMapping: 0.020479 ms MarkObjects: 0.149564 ms  DeleteObjects: 0.675523 ms)
-
-Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.270581 ms
-
-Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 510.
-Total: 0.198592 ms (FindLiveObjects: 0.015825 ms CreateObjectMapping: 0.014273 ms MarkObjects: 0.161045 ms  DeleteObjects: 0.007447 ms)
-
-HIGH SCORES
-joe 3800
-JOE 2600
-JRL 1800
-HGF 1500
-aaa 1200
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 

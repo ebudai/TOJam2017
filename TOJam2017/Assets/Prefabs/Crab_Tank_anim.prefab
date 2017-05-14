@@ -978,13 +978,13 @@ Rigidbody:
   m_GameObject: {fileID: 1324138879223572}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 2
-  m_AngularDrag: 9
+  m_Drag: 3
+  m_AngularDrag: 7
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!82 &82215070827978188
 AudioSource:
   m_ObjectHideFlags: 1
@@ -1188,10 +1188,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b79300c97151824ab8656390c146b74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 165
+  speed: 250
   scoreValue: 100
   fireRate: 2
-  shot: {fileID: 1319595185629206, guid: a54e98b37a859b1429e0f4d6819a1231, type: 2}
+  shot: {fileID: 1502224881354158, guid: de5a74351475acb4f948bf68f701fb1b, type: 2}
   explosion: {fileID: 1973311231090786, guid: c74345bf83c875d48b65f9e691e93146, type: 2}
   LeftHardPt: {fileID: 4211599452183860}
   RightHardPt: {fileID: 4633523557348790}
@@ -1203,7 +1203,7 @@ CapsuleCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1324138879223572}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 1.43
   m_Height: 3.82
