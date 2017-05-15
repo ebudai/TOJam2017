@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class PilotController : MonoBehaviour
 {
+    public GameObject laserPt;
     public GameObject shot;
     public Text scorePanel;
     public GameObject noticePanel;
@@ -131,8 +132,25 @@ public class PilotController : MonoBehaviour
             if (Input.GetAxis("Fire") != 0 || Input.GetKeyDown("joystick button 0"))
             {
                 laserSound.Play();
-                GameObject newShot = Instantiate(shot, transform.position + (transform.forward * 5.0f), transform.rotation);
-                newShot.GetComponent<Rigidbody>().AddForce(transform.forward * 6000);
+                GameObject newShot = (GameObject)Instantiate(shot, laserPt.transform.position, laserPt.transform.rotation);
+                newShot.transform.Rotate(new Vector3(-80.0f, 0.0f, -90.0f));
+                newShot.GetComponent<Rigidbody>().AddForce(laserPt.transform.forward * -1500);
+
+                //leftShot.GetComponent<Rigidbody>().AddForce(desiredHeadingLeft.normalized * 6000);
+                //rightShot.GetComponent<Rigidbody>().AddForce(desiredHeadingRight.normalized * 6000);
+
+                //GameObject newShot = Instantiate(shot, transform.position + (transform.up * -2.0f), transform.rotation);
+                //GameObject newShot = Instantiate(shot, transform.position, transform.rotation);
+                // newShot.transform.Rotate(new Vector3(-90.0f,0.0f,-90.0f));
+
+                //Vector3 direction = (transform.forward * 150) - newShot.transform.position;
+                //Debug.DrawRay(transform.position + (transform.up * -2.0f), transform.forward * 150, Color.blue);
+                //newShot.GetComponent<Rigidbody>().AddForce(direction.normalized * 3000);
+                // newShot.GetComponent<Rigidbody>().AddForce(transform.forward * 3000);
+
+                //Debug.Log("deltaP: " + desiredHeading.x + "," + desiredHeading.y + "," + desiredHeading.z);
+                //GameObject newShot = Instantiate(shot, transform.position + (transform.forward * 5.0f), transform.rotation);
+                //newShot.GetComponent<Rigidbody>().AddForce(transform.forward * 3000);
             }
             yield return new WaitForSeconds(0.2f);
         }
@@ -151,7 +169,7 @@ public class PilotController : MonoBehaviour
         }
         if (thrustInput > 0)
         {
-            if (!thrusterSound.isPlaying || thrusterSound.time > 2.0)
+            if (!thrusterSound.isPlaying)
             {
                 thrusterSound.Play();
             }
@@ -159,6 +177,10 @@ public class PilotController : MonoBehaviour
             thrust = Math.Min(thrust, MaxThrust);
             thrust = Math.Max(thrust, 0);
             ship.AddForce(transform.forward * thrust);
+        }
+        else
+        {
+            thrusterSound.Stop();
         }
     }
 
@@ -192,7 +214,6 @@ public class PilotController : MonoBehaviour
 
     IEnumerator ScreenFlash()
     {
-        Debug.Log("ScreenFlash");
         screenFlash.CrossFadeAlpha(0.5f, 0.0f, false);
         screenFlash.CrossFadeAlpha(0.0f, 0.2f, false);
         yield return new WaitForSeconds(0.0f);

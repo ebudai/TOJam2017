@@ -47,7 +47,7 @@ public class GameController : MonoBehaviour
     private List<Rigidbody> jellies = new List<Rigidbody>();
     private float waveStartTime;
     private int numCrabs = 3;
-    private int numEels = 2;
+    private int numEels = 0;
     private int level = 1;
     private int score = 0;
     private int pLives = 3;
@@ -113,37 +113,9 @@ public class GameController : MonoBehaviour
             for (i=0; i < jellyDensity; i++)
             {
                 //Debug.Log("Spawning jelly: " + i);
-                //spawn a jelly from 10-100 units away in a random dir...
-                float xOffset = Random.Range(-60f, 60.0f);
-                float yOffset = Random.Range(-60f, 60.0f);
-                float zOffset = Random.Range(-60f, 60.0f);
-
-                if (xOffset < 0 && xOffset > -10)
-                {
-                    xOffset -= 10;
-                }
-                if (xOffset > 0 && xOffset < -10)
-                {
-                    xOffset += 10;
-                }
-                if (yOffset < 0 && yOffset > -10)
-                {
-                    yOffset -= 10;
-                }
-                if (yOffset > 0 && yOffset < -10)
-                {
-                    yOffset += 10;
-                }
-                if (zOffset < 0 && zOffset > -10)
-                {
-                    zOffset -= 10;
-                }
-                if (zOffset > 0 && zOffset < -10)
-                {
-                    zOffset += 10;
-                }
-               // Debug.Log("spawnOffset: " + xOffset + "," + yOffset + "," + zOffset);
-                Vector3 spawnOffset = new Vector3(xOffset, yOffset, zOffset);
+                //spawn a jelly from 30-60 units away in a random dir...
+                Vector3 spawnOffset = Random.onUnitSphere * Random.Range(30f, 60.0f);
+                // Debug.Log("spawnOffset: " + xOffset + "," + yOffset + "," + zOffset);
                 Instantiate(jellyMob, player.transform.position + spawnOffset, jellyMob.transform.rotation);
             }
         }
@@ -151,47 +123,20 @@ public class GameController : MonoBehaviour
         while (true)
         { 
             jelliesArr = GameObject.FindGameObjectsWithTag("Jelly");
+            Debug.Log("Found " + jelliesArr.Length + " jellies");
             if (jelliesArr.Length < jellyDensity)
             {
                 //not enough jellies, create!
                 for (int i = jelliesArr.Length; i < jellyDensity; i++)
                 {
                     //Debug.Log("Spawning jelly: " + i);
-                    //spawn a jelly from 10-100 units away in a random dir...
-                    float xOffset = Random.Range(-60f, 60f);
-                    float yOffset = Random.Range(-60f, 60f);
-                    float zOffset = Random.Range(-60f, 60f);
-
-                    if (xOffset < 0 && xOffset > -20)
-                    {
-                        xOffset -= 20;
-                    }
-                    if (xOffset > 0 && xOffset < -20)
-                    {
-                        xOffset += 20;
-                    }
-                    if (yOffset < 0 && yOffset > -20)
-                    {
-                        yOffset -= 20;
-                    }
-                    if (yOffset > 0 && yOffset < -20)
-                    {
-                        yOffset += 20;
-                    }
-                    if (zOffset < 0 && zOffset > -20)
-                    {
-                        zOffset -= 20;
-                    }
-                    if (zOffset > 0 && zOffset < -20)
-                    {
-                        zOffset += 20;
-                    }
+                    //spawn a jelly from 50-60 units away in a random dir...
+                    Vector3 spawnOffset = Random.onUnitSphere * Random.Range(50f, 60.0f);
                     //Debug.Log("spawnOffset: " + xOffset + "," + yOffset + "," + zOffset);
-                    Vector3 spawnOffset = new Vector3(xOffset, yOffset, zOffset);
                     Instantiate(jellyMob, player.transform.position + spawnOffset, jellyMob.transform.rotation);
                 }
             }
-            yield return new WaitForSeconds(5.0f);
+            yield return new WaitForSeconds(1.0f);
         }
     }
 
@@ -229,70 +174,14 @@ public class GameController : MonoBehaviour
                     for (i = 0; i < numCrabs; i++)
                     {
                         //Debug.Log("Spawning crab: " + i);
-                        float xOffset = Random.Range(-60f, 60.0f);
-                        float yOffset = Random.Range(-60f, 60.0f);
-                        float zOffset = Random.Range(-60f, 60.0f);
-
-                        if (xOffset < 0 && xOffset > -10)
-                        {
-                            xOffset -= 10;
-                        }
-                        if (xOffset > 0 && xOffset < -10)
-                        {
-                            xOffset += 10;
-                        }
-                        if (yOffset < 0 && yOffset > -10)
-                        {
-                            yOffset -= 10;
-                        }
-                        if (yOffset > 0 && yOffset < -10)
-                        {
-                            yOffset += 10;
-                        }
-                        if (zOffset < 0 && zOffset > -10)
-                        {
-                            zOffset -= 10;
-                        }
-                        if (zOffset > 0 && zOffset < -10)
-                        {
-                            zOffset += 10;
-                        }
-                        Vector3 spawnOffset = new Vector3(xOffset, yOffset, zOffset);
-                        Instantiate(crabMob, player.transform.position + spawnOffset + (player.transform.forward * 35), crabMob.transform.rotation);
+                        Vector3 spawnOffset = Random.insideUnitSphere * 20f;
+                        Instantiate(crabMob, player.transform.position + spawnOffset + (player.transform.forward * 75), crabMob.transform.rotation);
                     }
                     for (i = 0; i < numEels; i++)
                     {
                         //Debug.Log("Spawning crab: " + i);
-                        float xOffset = Random.Range(-60f, 60.0f);
-                        float yOffset = Random.Range(-60f, 60.0f);
-                        float zOffset = Random.Range(-60f, 60.0f);
-
-                        if (xOffset < 0 && xOffset > -10)
-                        {
-                            xOffset -= 10;
-                        }
-                        if (xOffset > 0 && xOffset < -10)
-                        {
-                            xOffset += 10;
-                        }
-                        if (yOffset < 0 && yOffset > -10)
-                        {
-                            yOffset -= 10;
-                        }
-                        if (yOffset > 0 && yOffset < -10)
-                        {
-                            yOffset += 10;
-                        }
-                        if (zOffset < 0 && zOffset > -10)
-                        {
-                            zOffset -= 10;
-                        }
-                        if (zOffset > 0 && zOffset < -10)
-                        {
-                            zOffset += 10;
-                        }
-                        Vector3 spawnOffset = new Vector3(xOffset, yOffset, zOffset);
-                        Instantiate(eelMob, player.transform.position + spawnOffset + (player.transform.forward * 35), eelMob.transform.rotation);
+                        Vector3 spawnOffset = Random.insideUnitSphere * 30f;
+                        Instantiate(eelMob, player.transform.position + spawnOffset + (player.transform.forward * 75), eelMob.transform.rotation);
                     }
                     waveSpawned = true;
                 }
@@ -300,7 +189,7 @@ public class GameController : MonoBehaviour
                 {
                     //go to next wave
                     waveSpawned = false;
-                    numCrabs += 3;
+                    numCrabs += level;
                     numEels += 2;
                     level += 1;
                 }
@@ -549,7 +438,7 @@ public class GameController : MonoBehaviour
                         trigger.GetComponent<MissileBehaviour>().Explode();
                     }
                 }
-                else
+                else if (collided.tag != "Player")
                 {
                     trigger.GetComponent<MissileBehaviour>().Die();
                 }

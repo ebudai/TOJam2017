@@ -28,7 +28,7 @@ public class MissileBehaviour : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(2.5f);
             break;
         }
         Die();
@@ -36,12 +36,24 @@ public class MissileBehaviour : MonoBehaviour
 
     public void Explode()
     {
-        explosionSound.Play();
-        Die();
+    //    //explosionSound.Play();
+    //    Die();
     }
 
     public void Die()
     {
+        ////find dist to player       
+        //var player = GameObject.Find("PlayerShip");
+        //if (player != null && tag == "PlayerProjectile")
+        //{
+        //    var playerBrain = player.GetComponent<PilotController>();
+        //    if (player.activeInHierarchy && !playerBrain.invuln && !playerBrain.dying)
+        //    {
+        //        Vector3 playerPos = player.GetComponent<Transform>().position;
+        //        float distToPlayer = Vector3.Distance(playerPos, transform.position);
+        //        Debug.Log("Missile dying at dist: " + distToPlayer.ToString());
+        //    }
+        //}
         Destroy(gameObject);
     }
 }

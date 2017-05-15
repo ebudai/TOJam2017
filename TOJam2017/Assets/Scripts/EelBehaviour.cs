@@ -3,6 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Eel Notes: 
+//-model rotated
+//	-go down(-y) for forward
+//	-face -y for transform.forward 
+//	-rotate around Z for side to side forces
+
 public class EelBehaviour : MonoBehaviour
 {
     public float speed;
@@ -42,6 +48,7 @@ public class EelBehaviour : MonoBehaviour
         myState.playerSpotted = false;
         myState.alive = true;
         //build subsumption 
+        rulesList.Add(new SubsumptionRule(60, OrientDown));
         rulesList.Add(new SubsumptionRule(50, RunAway));
         rulesList.Add(new SubsumptionRule(30, Idle));
         rulesList.Add(new SubsumptionRule(10, AttackPlayer));
@@ -66,7 +73,7 @@ public class EelBehaviour : MonoBehaviour
             }
         }
         lastFinFlap = Time.time;
-        StartCoroutine(FollowPlayer());
+        StartCoroutine(ProcessBehaviours());
     }
 
     // Update is called once per frame for animation
@@ -84,7 +91,7 @@ public class EelBehaviour : MonoBehaviour
     {
         GameController.Instance.AddScore(scoreValue);
 
-        Rigidbody rigidBody = GetComponent<Rigidbody>();
+        //Rigidbody rigidBody = GetComponent<Rigidbody>();
         Instantiate(explosion, transform.position + (transform.up * -1.0f * 3), Quaternion.identity);
         Destroy(gameObject);
         myState.alive = false;
@@ -142,7 +149,7 @@ public class EelBehaviour : MonoBehaviour
 
     //Looped Bot brain "master behaviour"
     //executes subsumption rules and commands
-    IEnumerator FollowPlayer()
+    IEnumerator ProcessBehaviours()
     {
         yield return new WaitForSeconds(UnityEngine.Random.Range(1.5f, 3.0f));
         Rigidbody rigidBody = GetComponent<Rigidbody>();
@@ -174,6 +181,7 @@ public class EelBehaviour : MonoBehaviour
 
                 if (myCommands.angularCorrection != null)
                 {
+                   // Debug.Log("Eel Angular correction: <" + myCommands.angularCorrection.Value.magnitude + ">" + myCommands.angularCorrection);
                     rigidBody.AddTorque(myCommands.angularCorrection.Value);
                 }
                 if (myCommands.torque != null)
@@ -218,10 +226,15 @@ public class EelBehaviour : MonoBehaviour
             //change direction away from player
             var angularVelocityError = rigidBody.angularVelocity * -1;
             var angularVelocityCorrection = angularVelocityController.Update(angularVelocityError, 0.1f);
+
+            angularVelocityCorrection = angularVelocityError * 40;
             myCommands.angularCorrection = angularVelocityCorrection;
 
             var headingError = Vector3.Cross(transform.up * -1.0f, myState.desiredHeading * -1.0f);
             var headingCorrection = headingController.Update(headingError, 0.1f);
+
+
+            headingCorrection = headingError.normalized * 40.0f;
             myCommands.torque = headingCorrection;
 
             //go faster
@@ -254,10 +267,12 @@ public class EelBehaviour : MonoBehaviour
 
         Vector3 angularVelocityError = rigidBody.angularVelocity * -1;
         Vector3 angularVelocityCorrection = angularVelocityController.Update(angularVelocityError, 0.1f);
+        angularVelocityCorrection = angularVelocityError * 20;
         myCommands.angularCorrection = angularVelocityCorrection;
         Vector3 headingError = Vector3.Cross(transform.up * -1.0f, myState.desiredHeading);
         Vector3 headingCorrection = headingController.Update(headingError, 0.1f);
 
+        headingCorrection = headingError.normalized * 40.0f;
         myCommands.torque = headingCorrection;
         myCommands.thrust = speed;
     }
@@ -287,6 +302,16 @@ public class EelBehaviour : MonoBehaviour
         }
     }
 
+    void OrientDown()
+    {
+        var headingError = Vector3.Cross(transform.forward, Vector3.up);
+        //Vector3 headingCorrection = headingController.Update(headingError, 0.1f);
+        //headingCorrection = headingCorrection.normalized * 30.0f;
+
+        Vector3 headingCorrection = headingError.normalized * 10.0f;
+        myCommands.torque += headingCorrection;
+    }
+
     private float hitTime;
     public void TakeHit()
     {
@@ -294,6 +319,7 @@ public class EelBehaviour : MonoBehaviour
         myState.playerSpotted = false; //shit run away!
         hitTime = Time.time;
 
+        //spin away
         rigidBody.AddRelativeTorque(0.0f, 0.0f, 400 * finDir);
 
         health -= 5;

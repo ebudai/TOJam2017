@@ -47,6 +47,7 @@ public class CrabBehaviour : MonoBehaviour
         myState.playerSpotted = false;
         myState.alive = true;
         //build subsumption 
+        rulesList.Add(new SubsumptionRule(60, OrientDown));
         rulesList.Add(new SubsumptionRule(50, RunAway));
         rulesList.Add(new SubsumptionRule(30, Idle));
         rulesList.Add(new SubsumptionRule(10, AttackPlayer));
@@ -72,7 +73,7 @@ public class CrabBehaviour : MonoBehaviour
             }
         }
 
-        StartCoroutine(FollowPlayer());
+        StartCoroutine(ProcessBehaviours());
     }
 
     // Update is called once per frame for animation
@@ -97,7 +98,7 @@ public class CrabBehaviour : MonoBehaviour
     {
         GameController.Instance.AddScore(scoreValue);
 
-        Rigidbody rigidBody = GetComponent<Rigidbody>();
+        //Rigidbody rigidBody = GetComponent<Rigidbody>();
         //rigidBody.AddTorque(new Vector3(0.0f,1000.0f,500.0f));
         //rigidBody.velocity = Vector3.zero;
         Instantiate(explosion, transform.position + (transform.up*3), Quaternion.identity);
@@ -113,7 +114,7 @@ public class CrabBehaviour : MonoBehaviour
     //Physics callback, this is where sensation happens
     void FixedUpdate()
     {
-        Rigidbody rigidBody = GetComponent<Rigidbody>();
+        //Rigidbody rigidBody = GetComponent<Rigidbody>();
         Collider playerCollider = null;
 
         var player = GameObject.Find("PlayerShip");
@@ -150,7 +151,7 @@ public class CrabBehaviour : MonoBehaviour
 
     //Looped Bot brain "master behaviour"
     //executes subsumption rules and commands
-    IEnumerator FollowPlayer()
+    IEnumerator ProcessBehaviours()
     {
         yield return new WaitForSeconds(UnityEngine.Random.Range(1.5f, 3.0f));
         Rigidbody rigidBody = GetComponent<Rigidbody>();
@@ -166,7 +167,7 @@ public class CrabBehaviour : MonoBehaviour
                 kvp.Value.behaviourScript();
             }
 
-            //Execute commands
+            ////Execute commands
             if (myCommands.thrust > 0)
             {
                 rigidBody.AddForce(transform.forward * myCommands.thrust);
@@ -174,6 +175,7 @@ public class CrabBehaviour : MonoBehaviour
 
             if (myCommands.angularCorrection != null)
             {
+                //Debug.Log("Crab Angular correction: <"+ myCommands.angularCorrection.Value.magnitude + ">" + myCommands.angularCorrection);
                 rigidBody.AddTorque(myCommands.angularCorrection.Value);
             }
             if (myCommands.torque != null)
@@ -202,8 +204,8 @@ public class CrabBehaviour : MonoBehaviour
                 Vector3 desiredHeadingRight = player.transform.position - RightHardPt.position;
                 Vector3 desiredHeadingLeft = player.transform.position - LeftHardPt.position;
 
-                leftShot.GetComponent<Rigidbody>().AddForce(desiredHeadingLeft.normalized * 6000);
-                rightShot.GetComponent<Rigidbody>().AddForce(desiredHeadingRight.normalized * 6000);
+                leftShot.GetComponent<Rigidbody>().AddForce(desiredHeadingLeft.normalized * 2000);
+                rightShot.GetComponent<Rigidbody>().AddForce(desiredHeadingRight.normalized * 2000);
 
                 nextFire = Time.time + fireRate;
             }
@@ -221,15 +223,19 @@ public class CrabBehaviour : MonoBehaviour
         Rigidbody rigidBody = GetComponent<Rigidbody>();
         Collider playerCollider = null;
 
-        if (myState.distToPlayer <= 25 && !myState.playerSpotted || myState.distToPlayer <= 15)
+        if (myState.distToPlayer <= 25 && !myState.playerSpotted || myState.distToPlayer <= 10)
         {
             //change direction away from player
             var angularVelocityError = rigidBody.angularVelocity * -1;
             var angularVelocityCorrection = angularVelocityController.Update(angularVelocityError, 0.1f);
+
+            angularVelocityCorrection = angularVelocityError * 40;
             myCommands.angularCorrection = angularVelocityCorrection;
 
             var headingError = Vector3.Cross(transform.forward, myState.desiredHeading * -1.0f);
             var headingCorrection = headingController.Update(headingError, 0.1f);
+
+            headingCorrection = headingError.normalized * 40;
             myCommands.torque = headingCorrection;
             //run away fast
             myCommands.thrust = speed * 1.5f;
@@ -257,10 +263,14 @@ public class CrabBehaviour : MonoBehaviour
 
         Vector3 angularVelocityError = rigidBody.angularVelocity * -1;
         Vector3 angularVelocityCorrection = angularVelocityController.Update(angularVelocityError, 0.1f);
+
+        angularVelocityCorrection = angularVelocityError * 40;
         myCommands.angularCorrection = angularVelocityCorrection;
+
         Vector3 headingError = Vector3.Cross(transform.forward, myState.desiredHeading);
         Vector3 headingCorrection = headingController.Update(headingError, 0.1f);
 
+        headingCorrection = headingError.normalized * 40;
         myCommands.torque = headingCorrection;
         myCommands.thrust = speed;
 
@@ -288,6 +298,17 @@ public class CrabBehaviour : MonoBehaviour
         {
             flybySound.Play();
         }
+    }
+
+    void OrientDown()
+    {
+        var headingError = Vector3.Cross(transform.up, Vector3.up);
+
+        //Vector3 headingCorrection = headingController.Update(headingError, 0.1f);
+        //headingCorrection = headingCorrection.normalized * 30.0f;
+        Vector3 headingCorrection = headingError.normalized * 10.0f;
+
+        myCommands.torque += headingCorrection;
     }
 
     public void TakeHit()
